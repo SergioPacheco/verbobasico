@@ -52,12 +52,12 @@ export function ConjugationPage({ onBack }: ConjugationPageProps) {
         </div>
 
         {/* Tense tabs */}
-        <div className="flex gap-1 overflow-x-auto pb-2 mb-3">
+        <div className="flex flex-wrap gap-1 pb-2 mb-3">
           {AVAILABLE_TENSES.map((tense) => (
             <button
               key={tense}
               onClick={() => setSelectedTense(tense)}
-              className={`whitespace-nowrap py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+              className={`py-2 px-3 rounded-lg text-sm font-medium transition-all ${
                 selectedTense === tense
                   ? 'bg-spain-red text-white shadow-md'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
