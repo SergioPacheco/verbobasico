@@ -87,7 +87,15 @@ export interface TrainingQuestion {
   verb: Verb;
 }
 
-export type TrainingMode = 'daily' | 'situation' | 'verb' | 'mistakes' | 'gotchas';
+export type TrainingMode = 'daily' | 'situation' | 'verb' | 'mistakes' | 'gotchas' | 'listening' | 'speed' | 'cloze' | 'transform' | 'dialogue';
+
+export interface SpacedRepetitionCard {
+  phraseId: string;
+  interval: number;
+  repetition: number;
+  easeFactor: number;
+  nextReview: number;
+}
 
 export type GameLevel = 'iniciante' | 'intermediario' | 'avancado';
 
@@ -111,6 +119,7 @@ export interface UserProgress {
   mistakes: MistakeRecord[];
   completedSituations: Situation[];
   situationProgress: Partial<Record<Situation, number>>;
+  spacedRepetition: SpacedRepetitionCard[];
 }
 
 export interface MistakeRecord {

@@ -1,7 +1,21 @@
 import { useState } from 'react';
 import type { Situation } from './types';
 import { useProgress } from './hooks';
-import { HomePage, TrainingPage, ConjugationPage, MistakesPage, GotchasPage, LyricsPage, VocabularyPage } from './pages';
+import {
+  HomePage,
+  TrainingPage,
+  ConjugationPage,
+  MistakesPage,
+  GotchasPage,
+  LyricsPage,
+  VocabularyPage,
+  ListeningPage,
+  SpeedDrillPage,
+  DialoguePage,
+  ClozePage,
+  TransformPage,
+  IdiomsPage,
+} from './pages';
 
 type Page =
   | { type: 'home' }
@@ -10,7 +24,13 @@ type Page =
   | { type: 'mistakes' }
   | { type: 'gotchas' }
   | { type: 'lyrics' }
-  | { type: 'vocabulary' };
+  | { type: 'vocabulary' }
+  | { type: 'listening' }
+  | { type: 'speed' }
+  | { type: 'dialogue' }
+  | { type: 'cloze' }
+  | { type: 'transform' }
+  | { type: 'idioms' };
 
 export default function App() {
   const [page, setPage] = useState<Page>({ type: 'home' });
@@ -48,6 +68,18 @@ export default function App() {
       return <LyricsPage onBack={goHome} />;
     case 'vocabulary':
       return <VocabularyPage onBack={goHome} />;
+    case 'listening':
+      return <ListeningPage onBack={goHome} />;
+    case 'speed':
+      return <SpeedDrillPage onBack={goHome} />;
+    case 'dialogue':
+      return <DialoguePage onBack={goHome} />;
+    case 'cloze':
+      return <ClozePage onBack={goHome} />;
+    case 'transform':
+      return <TransformPage onBack={goHome} />;
+    case 'idioms':
+      return <IdiomsPage onBack={goHome} />;
     default:
       return (
         <HomePage
@@ -58,6 +90,12 @@ export default function App() {
           onViewConjugation={() => setPage({ type: 'conjugation' })}
           onViewLyrics={() => setPage({ type: 'lyrics' })}
           onViewVocabulary={() => setPage({ type: 'vocabulary' })}
+          onViewListening={() => setPage({ type: 'listening' })}
+          onViewSpeed={() => setPage({ type: 'speed' })}
+          onViewDialogue={() => setPage({ type: 'dialogue' })}
+          onViewCloze={() => setPage({ type: 'cloze' })}
+          onViewTransform={() => setPage({ type: 'transform' })}
+          onViewIdioms={() => setPage({ type: 'idioms' })}
         />
       );
   }

@@ -15,6 +15,7 @@ const DEFAULT_PROGRESS: UserProgress = {
   mistakes: [],
   completedSituations: [],
   situationProgress: {},
+  spacedRepetition: [],
 };
 
 export function loadProgress(): UserProgress {

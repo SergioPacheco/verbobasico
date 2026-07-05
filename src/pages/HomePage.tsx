@@ -10,6 +10,12 @@ interface HomePageProps {
   onViewConjugation: () => void;
   onViewLyrics: () => void;
   onViewVocabulary: () => void;
+  onViewListening: () => void;
+  onViewSpeed: () => void;
+  onViewDialogue: () => void;
+  onViewCloze: () => void;
+  onViewTransform: () => void;
+  onViewIdioms: () => void;
 }
 
 const SITUATIONS: Situation[] = [
@@ -25,6 +31,12 @@ export function HomePage({
   onViewConjugation,
   onViewLyrics,
   onViewVocabulary,
+  onViewListening,
+  onViewSpeed,
+  onViewDialogue,
+  onViewCloze,
+  onViewTransform,
+  onViewIdioms,
 }: HomePageProps) {
   const percentage = getProgressPercentage(progress);
   const today = new Date().toISOString().split('T')[0];
@@ -136,6 +148,72 @@ export function HomePage({
       </div>
 
       {/* Extra sections */}
+      <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1 animate-slide-up" style={{ animationDelay: '0.25s' }}>
+        🎮 Modos de Treino
+      </h2>
+
+      <div className="grid grid-cols-2 gap-3 mb-6 animate-slide-up" style={{ animationDelay: '0.27s' }}>
+        <button
+          onClick={onViewListening}
+          className="card text-left p-4 hover:border-spain-red/30 border-2 border-red-100"
+          aria-label="Modo Escuta"
+        >
+          <span className="text-2xl block mb-2">🎧</span>
+          <p className="font-semibold text-gray-900 text-sm">Modo Escuta</p>
+          <p className="text-xs text-gray-500">Ouça e escreva a frase</p>
+        </button>
+
+        <button
+          onClick={onViewSpeed}
+          className="card text-left p-4 hover:border-spain-red/30 border-2 border-orange-100"
+          aria-label="Speed Drill"
+        >
+          <span className="text-2xl block mb-2">⚡</span>
+          <p className="font-semibold text-gray-900 text-sm">Speed Drill</p>
+          <p className="text-xs text-gray-500">60s cronometrado</p>
+        </button>
+
+        <button
+          onClick={onViewDialogue}
+          className="card text-left p-4 hover:border-spain-red/30 border-2 border-blue-100"
+          aria-label="Diálogos"
+        >
+          <span className="text-2xl block mb-2">💬</span>
+          <p className="font-semibold text-gray-900 text-sm">Diálogos</p>
+          <p className="text-xs text-gray-500">Conversas por situação</p>
+        </button>
+
+        <button
+          onClick={onViewCloze}
+          className="card text-left p-4 hover:border-spain-red/30 border-2 border-green-100"
+          aria-label="Cloze Test"
+        >
+          <span className="text-2xl block mb-2">📝</span>
+          <p className="font-semibold text-gray-900 text-sm">Cloze Test</p>
+          <p className="text-xs text-gray-500">Textos com lacunas</p>
+        </button>
+
+        <button
+          onClick={onViewTransform}
+          className="card text-left p-4 hover:border-spain-red/30 border-2 border-purple-100"
+          aria-label="Transformação de Tempos"
+        >
+          <span className="text-2xl block mb-2">🔄</span>
+          <p className="font-semibold text-gray-900 text-sm">Transformação</p>
+          <p className="text-xs text-gray-500">Troque o tempo verbal</p>
+        </button>
+
+        <button
+          onClick={onViewIdioms}
+          className="card text-left p-4 hover:border-spain-red/30 border-2 border-yellow-100"
+          aria-label="Expressões Idiomáticas"
+        >
+          <span className="text-2xl block mb-2">🗣️</span>
+          <p className="font-semibold text-gray-900 text-sm">Expressões</p>
+          <p className="text-xs text-gray-500">Idiomáticas + Quiz</p>
+        </button>
+      </div>
+
       <div className="space-y-3 animate-slide-up" style={{ animationDelay: '0.3s' }}>
         <button
           onClick={onViewConjugation}
