@@ -4,15 +4,17 @@ import { PRONOUN_LABELS, TENSE_LABELS, SITUATION_LABELS } from '../types';
 import { useTraining, useProgress, useSpeech } from '../hooks';
 import { getMotivationalMessage, formatTime } from '../utils';
 import confetti from 'canvas-confetti';
+import { Header } from '../components';
 
 interface TrainingPageProps {
   situation?: Situation;
   phraseIds?: string[];
   onBack: () => void;
+  onNavigate: (page: string) => void;
   progressHook: ReturnType<typeof useProgress>;
 }
 
-export function TrainingPage({ situation, phraseIds, onBack, progressHook }: TrainingPageProps) {
+export function TrainingPage({ situation, phraseIds, onBack, onNavigate, progressHook }: TrainingPageProps) {
   const { progress, recordAnswer, updateSituationProgress } = progressHook;
 
   const {
@@ -30,7 +32,6 @@ export function TrainingPage({ situation, phraseIds, onBack, progressHook }: Tra
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const { speak, isSupported: speechSupported } = useSpeech();
 
-  // Timer
   useEffect(() => {
     timerRef.current = setInterval(() => {
       setElapsedTime((prev) => prev + 1);
@@ -104,36 +105,36 @@ export function TrainingPage({ situation, phraseIds, onBack, progressHook }: Tra
     }
   };
 
-  // Session complete screen
   if (sessionDone) {
     const accuracy = sessionTotal > 0 ? Math.round((sessionCorrect / sessionTotal) * 100) : 0;
     return (
-      <div className="min-h-screen px-4 py-8 max-w-lg mx-auto flex flex-col items-center justify-center animate-bounce-in">
-        <div className="card text-center w-full">
-          <span className="text-5xl block mb-4">🎉</span>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">¡Sesión completada!</h2>
-          <p className="text-gray-500 mb-6">
-            {situation ? `Módulo: ${SITUATION_LABELS[situation].emoji} ${SITUATION_LABELS[situation].name}` : 'Treino diário'}
-          </p>
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+        <Header title="🎯 Treino" onNavigate={onNavigate} showBack onBack={onBack} />
+        <div className="flex items-center justify-center px-4 py-10">
+          <div className="card text-center w-full max-w-sm animate-bounce-in">
+            <span className="text-5xl block mb-4">🎉</span>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">¡Sesión completada!</h2>
+            <p className="text-gray-500 mb-6">
+              {situation ? `Módulo: ${SITUATION_LABELS[situation].emoji} ${SITUATION_LABELS[situation].name}` : 'Treino diário'}
+            </p>
 
-          <div className="grid grid-cols-3 gap-4 mb-6">
-            <div className="bg-green-50 rounded-xl p-3">
-              <p className="text-2xl font-bold text-green-700">{sessionCorrect}</p>
-              <p className="text-xs text-green-600">acertos</p>
+            <div className="grid grid-cols-3 gap-4 mb-6">
+              <div className="bg-green-50 rounded-xl p-3">
+                <p className="text-2xl font-bold text-green-700">{sessionCorrect}</p>
+                <p className="text-xs text-green-600">acertos</p>
+              </div>
+              <div className="bg-blue-50 rounded-xl p-3">
+                <p className="text-2xl font-bold text-blue-700">{accuracy}%</p>
+                <p className="text-xs text-blue-600">precisão</p>
+              </div>
+              <div className="bg-purple-50 rounded-xl p-3">
+                <p className="text-2xl font-bold text-purple-700">{formatTime(elapsedTime)}</p>
+                <p className="text-xs text-purple-600">tempo</p>
+              </div>
             </div>
-            <div className="bg-blue-50 rounded-xl p-3">
-              <p className="text-2xl font-bold text-blue-700">{accuracy}%</p>
-              <p className="text-xs text-blue-600">precisão</p>
-            </div>
-            <div className="bg-purple-50 rounded-xl p-3">
-              <p className="text-2xl font-bold text-purple-700">{formatTime(elapsedTime)}</p>
-              <p className="text-xs text-purple-600">tempo</p>
-            </div>
+
+            <button onClick={onBack} className="btn-primary w-full">← Voltar</button>
           </div>
-
-          <button onClick={onBack} className="btn-primary w-full">
-            ← Voltar ao início
-          </button>
         </div>
       </div>
     );
@@ -141,162 +142,131 @@ export function TrainingPage({ situation, phraseIds, onBack, progressHook }: Tra
 
   if (!question || !currentPhrase) {
     return (
-      <div className="min-h-screen px-4 py-8 max-w-lg mx-auto flex flex-col items-center justify-center">
-        <p className="text-gray-600 text-lg mb-4">Nenhuma frase disponível.</p>
-        <button onClick={onBack} className="btn-primary">Voltar</button>
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+        <Header title="🎯 Treino" onNavigate={onNavigate} showBack onBack={onBack} />
+        <div className="flex items-center justify-center px-4 py-20">
+          <div className="card text-center">
+            <p className="text-gray-600 text-lg mb-4">Nenhuma frase disponível.</p>
+            <button onClick={onBack} className="btn-primary">Voltar</button>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen px-4 py-6 max-w-lg mx-auto">
-      {/* Top bar */}
-      <div className="flex items-center justify-between mb-4">
-        <button onClick={onBack} className="btn-ghost text-sm" aria-label="Sair">
-          ✕
-        </button>
-        <div className="flex-1 mx-4">
-          <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-spain-red to-spain-yellow rounded-full transition-all duration-300"
-              style={{ width: `${progressPercent}%` }}
-              role="progressbar"
-              aria-valuenow={progressPercent}
-              aria-valuemin={0}
-              aria-valuemax={100}
-            />
-          </div>
-        </div>
-        <div className="flex items-center gap-2 text-sm text-gray-500">
-          <span>⏱ {formatTime(elapsedTime)}</span>
-          <span className="text-orange-500 font-semibold">🔥{progress.currentStreak}</span>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+      <Header
+        title={situation ? `${SITUATION_LABELS[situation].emoji} ${SITUATION_LABELS[situation].name}` : '🎯 Treino Diário'}
+        subtitle={`⏱ ${formatTime(elapsedTime)} | 🔥${progress.currentStreak}`}
+        onNavigate={onNavigate}
+        showBack
+        onBack={onBack}
+      />
 
-      {/* Situation badge */}
-      {situation && (
-        <div className="text-center mb-4 animate-fade-in">
-          <span className="badge-neutral">
-            {SITUATION_LABELS[situation].emoji} {SITUATION_LABELS[situation].name}
-          </span>
-        </div>
-      )}
-
-      {/* Question Card */}
-      <div className={`card mb-4 ${shakeError ? 'animate-shake' : 'animate-fade-in'}`}>
-        {/* Context: the full phrase in Portuguese */}
-        <div className="mb-4">
-          <p className="text-sm text-gray-500 mb-1">🇧🇷 Você quer dizer:</p>
-          <p className="text-lg text-gray-800 font-medium">{currentPhrase.portuguese}</p>
-        </div>
-
-        {/* Challenge: fill in the blank */}
-        <div className="bg-gray-50 rounded-xl p-4 mb-4">
-          <p className="text-sm text-gray-500 mb-2">🇪🇸 Complete com a conjugação correta:</p>
-          <p className="text-xl text-gray-900 font-medium leading-relaxed">
-            {currentPhrase.challenge.split('___').map((part, idx, arr) => (
-              <span key={idx}>
-                {part}
-                {idx < arr.length - 1 && (
-                  <span className="inline-block mx-1 border-b-2 border-spain-red min-w-[80px] text-center text-spain-red font-bold">
-                    {isAnswered ? currentPhrase.conjugation : '?'}
-                  </span>
-                )}
-              </span>
-            ))}
-          </p>
-        </div>
-
-        {/* Verb info */}
-        <div className="flex items-center gap-2 flex-wrap text-xs text-gray-500 mb-4">
-          <span className="bg-gray-100 rounded-full px-2 py-1">
-            verbo: <strong>{currentPhrase.verb}</strong>
-          </span>
-          <span className="bg-gray-100 rounded-full px-2 py-1">
-            {PRONOUN_LABELS[currentPhrase.pronoun]}
-          </span>
-          <span className="bg-gray-100 rounded-full px-2 py-1">
-            {TENSE_LABELS[currentPhrase.tense]}
-          </span>
-          {question.verb.type === 'irregular' && (
-            <span className="bg-red-100 text-red-700 rounded-full px-2 py-1">⚡ irregular</span>
-          )}
-        </div>
-
-        {/* Answer input */}
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="answer-input" className="sr-only">
-            Conjugação de {currentPhrase.verb} para {PRONOUN_LABELS[currentPhrase.pronoun]}
-          </label>
-          <input
-            ref={inputRef}
-            id="answer-input"
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            disabled={isAnswered}
-            placeholder="Digite a conjugação..."
-            className={`input-field mb-3 ${
-              isAnswered
-                ? isCorrect
-                  ? 'border-green-500 bg-green-50 text-green-800'
-                  : 'border-red-500 bg-red-50 text-red-800'
-                : ''
-            }`}
-            autoComplete="off"
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
+      <div className="max-w-2xl mx-auto px-4 py-4">
+        {/* Progress bar */}
+        <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-4">
+          <div
+            className="h-full bg-gradient-to-r from-spain-red to-spain-yellow rounded-full transition-all duration-300"
+            style={{ width: `${progressPercent}%` }}
           />
+        </div>
 
-          {!isAnswered ? (
-            <button type="submit" disabled={!inputValue.trim()} className="btn-primary w-full">
-              Verificar
-            </button>
-          ) : (
-            <button type="button" onClick={handleNext} className="btn-primary w-full" autoFocus>
-              {isSessionComplete ? '🏁 Ver resultado' : 'Próxima →'}
-            </button>
-          )}
-        </form>
-      </div>
+        {/* Question Card */}
+        <div className={`card mb-4 ${shakeError ? 'animate-shake' : 'animate-fade-in'}`}>
+          <div className="mb-4">
+            <p className="text-sm text-gray-500 mb-1">🇧🇷 Você quer dizer:</p>
+            <p className="text-lg text-gray-800 font-medium">{currentPhrase.portuguese}</p>
+          </div>
 
-      {/* Feedback */}
-      {isAnswered && (
-        <div className={`card animate-bounce-in ${isCorrect ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
-          <div className="flex items-start gap-3 mb-2">
-            <span className="text-2xl">{isCorrect ? '✅' : '❌'}</span>
-            <div className="flex-1">
-              <p className="font-semibold text-gray-900">{message}</p>
-              {!isCorrect && (
-                <p className="mt-1 text-gray-700 text-sm">
-                  Correto: <strong className="text-green-700">{currentPhrase.conjugation}</strong>
-                </p>
-              )}
-            </div>
-            {speechSupported && (
-              <button
-                onClick={() => speak(currentPhrase.spanish)}
-                className="text-gray-400 hover:text-spain-red p-1"
-                aria-label="Ouvir frase completa"
-              >
-                🔊
-              </button>
+          <div className="bg-gray-50 rounded-xl p-4 mb-4">
+            <p className="text-sm text-gray-500 mb-2">🇪🇸 Complete com a conjugação correta:</p>
+            <p className="text-xl text-gray-900 font-medium leading-relaxed">
+              {currentPhrase.challenge.split('___').map((part, idx, arr) => (
+                <span key={idx}>
+                  {part}
+                  {idx < arr.length - 1 && (
+                    <span className="inline-block mx-1 border-b-2 border-spain-red min-w-[80px] text-center text-spain-red font-bold">
+                      {isAnswered ? currentPhrase.conjugation : '?'}
+                    </span>
+                  )}
+                </span>
+              ))}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap text-xs text-gray-500 mb-4">
+            <span className="bg-gray-100 rounded-full px-2 py-1">verbo: <strong>{currentPhrase.verb}</strong></span>
+            <span className="bg-gray-100 rounded-full px-2 py-1">{PRONOUN_LABELS[currentPhrase.pronoun]}</span>
+            <span className="bg-gray-100 rounded-full px-2 py-1">{TENSE_LABELS[currentPhrase.tense]}</span>
+            {question.verb.type === 'irregular' && (
+              <span className="bg-red-100 text-red-700 rounded-full px-2 py-1">⚡ irregular</span>
             )}
           </div>
 
-          {/* Full phrase */}
-          <div className="bg-white/60 rounded-lg p-3">
-            <p className="text-sm text-gray-700 font-medium">
-              🇪🇸 {currentPhrase.spanish}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              💡 <em>{question.verb.tip}</em>
-            </p>
-          </div>
+          <form onSubmit={handleSubmit}>
+            <input
+              ref={inputRef}
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              disabled={isAnswered}
+              placeholder="Digite a conjugação..."
+              className={`input-field mb-3 ${
+                isAnswered
+                  ? isCorrect
+                    ? 'border-green-500 bg-green-50 text-green-800'
+                    : 'border-red-500 bg-red-50 text-red-800'
+                  : ''
+              }`}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+            />
+
+            {!isAnswered ? (
+              <button type="submit" disabled={!inputValue.trim()} className="btn-primary w-full">Verificar</button>
+            ) : (
+              <button type="button" onClick={handleNext} className="btn-primary w-full" autoFocus>
+                {isSessionComplete ? '🏁 Ver resultado' : 'Próxima →'}
+              </button>
+            )}
+          </form>
         </div>
-      )}
+
+        {isAnswered && (
+          <div className={`card animate-bounce-in ${isCorrect ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
+            <div className="flex items-start gap-3 mb-2">
+              <span className="text-2xl">{isCorrect ? '✅' : '❌'}</span>
+              <div className="flex-1">
+                <p className="font-semibold text-gray-900">{message}</p>
+                {!isCorrect && (
+                  <p className="mt-1 text-gray-700 text-sm">
+                    Correto: <strong className="text-green-700">{currentPhrase.conjugation}</strong>
+                  </p>
+                )}
+              </div>
+              {speechSupported && (
+                <button
+                  onClick={() => speak(currentPhrase.spanish)}
+                  className="text-gray-400 hover:text-spain-red p-1"
+                  aria-label="Ouvir frase completa"
+                >
+                  🔊
+                </button>
+              )}
+            </div>
+
+            <div className="bg-white/60 rounded-lg p-3">
+              <p className="text-sm text-gray-700 font-medium">🇪🇸 {currentPhrase.spanish}</p>
+              <p className="text-xs text-gray-500 mt-1">💡 <em>{question.verb.tip}</em></p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

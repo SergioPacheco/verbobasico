@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { normalizeAnswer } from '../utils';
+import { Header } from '../components';
 
 interface TransformPageProps {
   onBack: () => void;
+  onNavigate: (page: string) => void;
 }
 
 type TargetTense = 'preteritoIndefinido' | 'futuroSimple' | 'condicional' | 'imperfecto';
@@ -128,7 +130,7 @@ function shuffle<T>(arr: T[]): T[] {
   return [...arr].sort(() => Math.random() - 0.5);
 }
 
-export function TransformPage({ onBack }: TransformPageProps) {
+export function TransformPage({ onBack, onNavigate }: TransformPageProps) {
   const [queue] = useState(() => shuffle(EXERCISES).slice(0, 8));
   const [current, setCurrent] = useState(0);
   const [input, setInput] = useState('');
@@ -170,150 +172,125 @@ export function TransformPage({ onBack }: TransformPageProps) {
   if (done) {
     const pct = Math.round((score / queue.length) * 100);
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="card max-w-sm w-full text-center animate-slide-up">
-          <p className="text-5xl mb-3">{pct >= 80 ? '🏆' : pct >= 50 ? '🎯' : '💪'}</p>
-          <h2 className="text-2xl font-bold text-gray-900 mb-1">Transformações concluídas!</h2>
-          <p className="text-4xl font-bold text-spain-red my-4">
-            {score}/{queue.length}
-          </p>
-          <p className="text-gray-500 mb-6">{pct}% de precisão</p>
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+        <Header title="🔄 Transformação" onNavigate={onNavigate} showBack onBack={onBack} />
+        <div className="flex items-center justify-center px-4 py-10">
+          <div className="card max-w-sm w-full text-center animate-slide-up">
+            <p className="text-5xl mb-3">{pct >= 80 ? '🏆' : pct >= 50 ? '🎯' : '💪'}</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-1">Transformações concluídas!</h2>
+            <p className="text-4xl font-bold text-spain-red my-4">{score}/{queue.length}</p>
+            <p className="text-gray-500 mb-6">{pct}% de precisão</p>
 
-          <button
-            onClick={() => { setCurrent(0); setInput(''); setStatus('answering'); setScore(0); setDone(false); }}
-            className="btn-primary w-full mb-3"
-          >
-            🔄 Tentar novamente
-          </button>
-          <button onClick={onBack} className="btn-secondary w-full">
-            ← Voltar
-          </button>
+            <button
+              onClick={() => { setCurrent(0); setInput(''); setStatus('answering'); setScore(0); setDone(false); }}
+              className="btn-primary w-full"
+            >
+              🔄 Tentar novamente
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen px-4 py-6 max-w-lg mx-auto">
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <button onClick={onBack} className="text-gray-500 hover:text-gray-700 text-lg">←</button>
-        <div className="flex-1">
-          <h1 className="font-bold text-gray-900">🔄 Transformação de Tempos</h1>
-          <p className="text-xs text-gray-500">Reescreva no tempo pedido</p>
-        </div>
-        <span className="text-sm font-semibold text-gray-600">
-          {current + 1}/{queue.length}
-        </span>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+      <Header
+        title="🔄 Transformação"
+        subtitle={`${current + 1}/${queue.length}`}
+        onNavigate={onNavigate}
+        showBack
+        onBack={onBack}
+      />
 
-      {/* Progress */}
-      <div className="h-2 bg-gray-100 rounded-full mb-6">
-        <div
-          className="h-full bg-spain-red rounded-full transition-all duration-300"
-          style={{ width: `${(current / queue.length) * 100}%` }}
-        />
-      </div>
-
-      {/* Card */}
-      <div className="card animate-slide-up" key={current}>
-        {/* Tense target */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-4">
-          <p className="text-xs text-blue-600 font-semibold uppercase tracking-wide mb-1">
-            Transforme para →
-          </p>
-          <p className="text-blue-800 font-bold">{TENSE_NAMES[exercise.targetTense]}</p>
-          <p className="text-xs text-blue-600">{TENSE_TIPS[exercise.targetTense]}</p>
+      <div className="max-w-2xl mx-auto px-4 py-4">
+        <div className="h-2 bg-gray-100 rounded-full mb-6">
+          <div
+            className="h-full bg-spain-red rounded-full transition-all duration-300"
+            style={{ width: `${(current / queue.length) * 100}%` }}
+          />
         </div>
 
-        {/* Present sentence */}
-        <div className="mb-4">
-          <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Frase no presente</p>
-          <p className="text-xl font-semibold text-gray-800">{exercise.presentSentence}</p>
-          <p className="text-sm text-gray-500 mt-1">
-            Verbo: <span className="font-medium text-spain-red">{exercise.verb}</span> ({exercise.pronoun})
-          </p>
-        </div>
+        <div className="card animate-slide-up" key={current}>
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 mb-4">
+            <p className="text-xs text-blue-600 font-semibold uppercase tracking-wide mb-1">Transforme para →</p>
+            <p className="text-blue-800 font-bold">{TENSE_NAMES[exercise.targetTense]}</p>
+            <p className="text-xs text-blue-600">{TENSE_TIPS[exercise.targetTense]}</p>
+          </div>
 
-        {/* Input */}
-        {status === 'answering' && (
-          <div>
-            <p className="text-xs text-gray-500 mb-2">
-              Qual é a conjugação de <strong>{exercise.verb}</strong> ({exercise.pronoun}) no{' '}
-              {TENSE_NAMES[exercise.targetTense]}?
+          <div className="mb-4">
+            <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Frase no presente</p>
+            <p className="text-xl font-semibold text-gray-800">{exercise.presentSentence}</p>
+            <p className="text-sm text-gray-500 mt-1">
+              Verbo: <span className="font-medium text-spain-red">{exercise.verb}</span> ({exercise.pronoun})
             </p>
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder={`conjugação de ${exercise.verb}...`}
-              className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-center text-lg focus:outline-none focus:border-spain-red mb-4"
-              autoComplete="off"
-              autoCapitalize="none"
-              autoFocus
-            />
-            <button
-              onClick={handleSubmit}
-              disabled={!input.trim()}
-              className="btn-primary w-full disabled:opacity-40"
-            >
-              Verificar
-            </button>
           </div>
-        )}
 
-        {/* Feedback */}
-        {(status === 'correct' || status === 'wrong') && (
-          <div className="animate-fade-in">
-            <div
-              className={`rounded-xl p-4 mb-4 ${
-                status === 'correct'
-                  ? 'bg-green-50 border border-green-200'
-                  : 'bg-red-50 border border-red-200'
-              }`}
-            >
-              {status === 'correct' ? (
-                <>
-                  <p className="text-green-700 font-bold mb-1">✅ Correto!</p>
-                  <p className="text-green-600 text-sm">
-                    <span className="font-semibold">{exercise.targetConjugation}</span>
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="text-red-700 font-bold mb-1">❌ Incorreto</p>
-                  <p className="text-sm text-gray-600">
-                    Você: <span className="line-through text-red-500">{input}</span>
-                  </p>
-                  <p className="text-sm font-semibold text-green-700">
-                    Correto: {exercise.targetConjugation}
-                  </p>
-                </>
-              )}
+          {status === 'answering' && (
+            <div>
+              <p className="text-xs text-gray-500 mb-2">
+                Qual é a conjugação de <strong>{exercise.verb}</strong> ({exercise.pronoun}) no{' '}
+                {TENSE_NAMES[exercise.targetTense]}?
+              </p>
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder={`conjugação de ${exercise.verb}...`}
+                className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-center text-lg focus:outline-none focus:border-spain-red mb-4"
+                autoComplete="off"
+                autoCapitalize="none"
+                autoFocus
+              />
+              <button
+                onClick={handleSubmit}
+                disabled={!input.trim()}
+                className="btn-primary w-full disabled:opacity-40"
+              >
+                Verificar
+              </button>
             </div>
+          )}
 
-            {/* Full sentence in target tense */}
-            <div className="bg-gray-50 rounded-xl p-3 mb-4">
-              <p className="text-xs text-gray-400 mb-1">Exemplo completo:</p>
-              <p className="text-gray-800 font-medium">{exercise.targetSentence}</p>
+          {(status === 'correct' || status === 'wrong') && (
+            <div className="animate-fade-in">
+              <div
+                className={`rounded-xl p-4 mb-4 ${
+                  status === 'correct' ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
+                }`}
+              >
+                {status === 'correct' ? (
+                  <>
+                    <p className="text-green-700 font-bold mb-1">✅ Correto!</p>
+                    <p className="text-green-600 text-sm"><span className="font-semibold">{exercise.targetConjugation}</span></p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-red-700 font-bold mb-1">❌ Incorreto</p>
+                    <p className="text-sm text-gray-600">Você: <span className="line-through text-red-500">{input}</span></p>
+                    <p className="text-sm font-semibold text-green-700">Correto: {exercise.targetConjugation}</p>
+                  </>
+                )}
+              </div>
+
+              <div className="bg-gray-50 rounded-xl p-3 mb-4">
+                <p className="text-xs text-gray-400 mb-1">Exemplo completo:</p>
+                <p className="text-gray-800 font-medium">{exercise.targetSentence}</p>
+              </div>
+
+              <div className="text-xs text-gray-500 bg-yellow-50 border border-yellow-200 rounded-xl p-2 mb-4">
+                💡 <span className="font-medium">Dica:</span> {exercise.hint}
+              </div>
+
+              <button onClick={handleNext} className="btn-primary w-full">
+                {current + 1 >= queue.length ? 'Ver resultado' : 'Próxima →'}
+              </button>
             </div>
+          )}
+        </div>
 
-            {/* Hint */}
-            <div className="text-xs text-gray-500 bg-yellow-50 border border-yellow-200 rounded-xl p-2 mb-4">
-              💡 <span className="font-medium">Dica:</span> {exercise.hint}
-            </div>
-
-            <button onClick={handleNext} className="btn-primary w-full">
-              {current + 1 >= queue.length ? 'Ver resultado' : 'Próxima →'}
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* Score */}
-      <div className="mt-4 text-center text-sm text-gray-500">
-        ✅ {score} acertos até agora
+        <div className="mt-4 text-center text-sm text-gray-500">✅ {score} acertos até agora</div>
       </div>
     </div>
   );

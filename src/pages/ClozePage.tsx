@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { normalizeAnswer } from '../utils';
+import { Header } from '../components';
 
 interface ClozePageProps {
   onBack: () => void;
+  onNavigate: (page: string) => void;
 }
 
 interface ClozeText {
@@ -121,7 +123,7 @@ const CLOZE_TEXTS: ClozeText[] = [
   },
 ];
 
-export function ClozePage({ onBack }: ClozePageProps) {
+export function ClozePage({ onBack, onNavigate }: ClozePageProps) {
   const [selectedText, setSelectedText] = useState<ClozeText | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -157,147 +159,127 @@ export function ClozePage({ onBack }: ClozePageProps) {
   const correctCount = Object.values(results).filter(Boolean).length;
   const totalCount = selectedText?.blanks.length ?? 0;
 
-  // Text selector
   if (!selectedText) {
     return (
-      <div className="min-h-screen px-4 py-6 max-w-lg mx-auto">
-        <div className="flex items-center gap-3 mb-6">
-          <button onClick={onBack} className="text-gray-500 hover:text-gray-700 text-lg">←</button>
-          <div>
-            <h1 className="font-bold text-gray-900">📝 Cloze Test</h1>
-            <p className="text-xs text-gray-500">Textos com lacunas para preencher</p>
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+        <Header title="📝 Cloze Test" subtitle="Textos com lacunas" onNavigate={onNavigate} showBack onBack={onBack} />
+        <div className="max-w-2xl mx-auto px-4 py-4">
+          <div className="space-y-3">
+            {CLOZE_TEXTS.map((text) => (
+              <button
+                key={text.id}
+                onClick={() => selectText(text)}
+                className="card w-full text-left p-4 flex items-center gap-4 hover:border-spain-red/30"
+              >
+                <span className="text-3xl">{text.emoji}</span>
+                <div>
+                  <p className="font-semibold text-gray-900">{text.title}</p>
+                  <p className="text-xs text-gray-500">
+                    {text.situation} · {text.blanks.length} lacunas
+                  </p>
+                </div>
+                <span className="ml-auto text-gray-300">→</span>
+              </button>
+            ))}
           </div>
-        </div>
-
-        <div className="space-y-3">
-          {CLOZE_TEXTS.map((text) => (
-            <button
-              key={text.id}
-              onClick={() => selectText(text)}
-              className="card w-full text-left p-4 flex items-center gap-4 hover:border-spain-red/30"
-            >
-              <span className="text-3xl">{text.emoji}</span>
-              <div>
-                <p className="font-semibold text-gray-900">{text.title}</p>
-                <p className="text-xs text-gray-500">
-                  {text.situation} · {text.blanks.length} lacunas
-                </p>
-              </div>
-              <span className="ml-auto text-gray-300">→</span>
-            </button>
-          ))}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen px-4 py-6 max-w-lg mx-auto">
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <button
-          onClick={() => setSelectedText(null)}
-          className="text-gray-500 hover:text-gray-700 text-lg"
-          aria-label="Voltar"
-        >
-          ←
-        </button>
-        <div className="flex-1">
-          <h1 className="font-bold text-gray-900">{selectedText.emoji} {selectedText.title}</h1>
-          <p className="text-xs text-gray-500">{selectedText.situation}</p>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+      <Header
+        title={`${selectedText.emoji} ${selectedText.title}`}
+        subtitle={submitted ? `${correctCount}/${totalCount}` : selectedText.situation}
+        onNavigate={onNavigate}
+        showBack
+        onBack={() => setSelectedText(null)}
+      />
+
+      <div className="max-w-2xl mx-auto px-4 py-4">
+        <div className="card mb-6">
+          {selectedText.sentences.map((sentence, si) => {
+            const blanksInSentence = selectedText.blanks.filter((b) => b.sentence === si);
+            const rendered = sentence;
+
+            return (
+              <div key={si} className="mb-3 last:mb-0">
+                <p className="text-gray-800 leading-relaxed">
+                  {(() => {
+                    const parts = rendered.split(/(_+\(\d+\))/g);
+                    return parts.map((part, pi) => {
+                      const blank = blanksInSentence.find((b) => b.placeholder === part);
+                      if (blank) {
+                        const key = blank.placeholder;
+                        const val = answers[key] ?? '';
+                        const isCorrect = results[key];
+                        const isWrong = submitted && isCorrect === false;
+                        return (
+                          <span key={pi} className="inline-block">
+                            <input
+                              type="text"
+                              value={val}
+                              onChange={(e) => handleChange(key, e.target.value)}
+                              disabled={submitted}
+                              placeholder="___"
+                              className={`inline-block w-24 border-b-2 px-1 text-center text-sm focus:outline-none ${
+                                submitted
+                                  ? isCorrect
+                                    ? 'border-green-500 text-green-700 bg-green-50'
+                                    : 'border-red-500 text-red-600 bg-red-50'
+                                  : 'border-spain-red bg-transparent'
+                              }`}
+                            />
+                            {isWrong && (
+                              <span className="text-xs text-green-600 ml-1 font-medium">
+                                ({blank.answer})
+                              </span>
+                            )}
+                          </span>
+                        );
+                      }
+                      return <span key={pi}>{part}</span>;
+                    });
+                  })()}
+                </p>
+              </div>
+            );
+          })}
         </div>
+
         {submitted && (
-          <span className="text-sm font-semibold text-gray-700">
-            {correctCount}/{totalCount}
-          </span>
+          <div
+            className={`card mb-4 text-center animate-fade-in ${
+              correctCount === totalCount ? 'border-green-300 bg-green-50' : 'border-yellow-300 bg-yellow-50'
+            }`}
+          >
+            <p className="text-2xl mb-1">{correctCount === totalCount ? '🏆' : '📝'}</p>
+            <p className="font-bold text-gray-900">
+              {correctCount}/{totalCount} corretas ({Math.round((correctCount / totalCount) * 100)}%)
+            </p>
+          </div>
+        )}
+
+        {!submitted ? (
+          <button
+            onClick={handleSubmit}
+            disabled={!allFilled()}
+            className="btn-primary w-full disabled:opacity-40"
+          >
+            Verificar respostas
+          </button>
+        ) : (
+          <div className="space-y-3">
+            <button onClick={() => selectText(selectedText)} className="btn-primary w-full">
+              🔄 Tentar novamente
+            </button>
+            <button onClick={() => setSelectedText(null)} className="btn-secondary w-full">
+              ← Escolher outro texto
+            </button>
+          </div>
         )}
       </div>
-
-      {/* Sentences */}
-      <div className="card mb-6">
-        {selectedText.sentences.map((sentence, si) => {
-          const blanksInSentence = selectedText.blanks.filter((b) => b.sentence === si);
-          let rendered = sentence;
-
-          return (
-            <div key={si} className="mb-3 last:mb-0">
-              <p className="text-gray-800 leading-relaxed">
-                {(() => {
-                  const parts = rendered.split(/(_+\(\d+\))/g);
-                  return parts.map((part, pi) => {
-                    const blank = blanksInSentence.find((b) => b.placeholder === part);
-                    if (blank) {
-                      const key = blank.placeholder;
-                      const val = answers[key] ?? '';
-                      const isCorrect = results[key];
-                      const isWrong = submitted && isCorrect === false;
-                      return (
-                        <span key={pi} className="inline-block">
-                          <input
-                            type="text"
-                            value={val}
-                            onChange={(e) => handleChange(key, e.target.value)}
-                            disabled={submitted}
-                            placeholder="___"
-                            className={`inline-block w-24 border-b-2 px-1 text-center text-sm focus:outline-none ${
-                              submitted
-                                ? isCorrect
-                                  ? 'border-green-500 text-green-700 bg-green-50'
-                                  : 'border-red-500 text-red-600 bg-red-50'
-                                : 'border-spain-red bg-transparent'
-                            }`}
-                          />
-                          {isWrong && (
-                            <span className="text-xs text-green-600 ml-1 font-medium">
-                              ({blank.answer})
-                            </span>
-                          )}
-                        </span>
-                      );
-                    }
-                    return <span key={pi}>{part}</span>;
-                  });
-                })()}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Result summary */}
-      {submitted && (
-        <div
-          className={`card mb-4 text-center animate-fade-in ${
-            correctCount === totalCount ? 'border-green-300 bg-green-50' : 'border-yellow-300 bg-yellow-50'
-          }`}
-        >
-          <p className="text-2xl mb-1">{correctCount === totalCount ? '🏆' : '📝'}</p>
-          <p className="font-bold text-gray-900">
-            {correctCount}/{totalCount} corretas (
-            {Math.round((correctCount / totalCount) * 100)}%)
-          </p>
-        </div>
-      )}
-
-      {/* Actions */}
-      {!submitted ? (
-        <button
-          onClick={handleSubmit}
-          disabled={!allFilled()}
-          className="btn-primary w-full disabled:opacity-40"
-        >
-          Verificar respostas
-        </button>
-      ) : (
-        <div className="space-y-3">
-          <button onClick={() => selectText(selectedText)} className="btn-primary w-full">
-            🔄 Tentar novamente
-          </button>
-          <button onClick={() => setSelectedText(null)} className="btn-secondary w-full">
-            ← Escolher outro texto
-          </button>
-        </div>
-      )}
     </div>
   );
 }

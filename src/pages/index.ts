@@ -11,3 +11,4 @@ export { DialoguePage } from './DialoguePage';
 export { ClozePage } from './ClozePage';
 export { TransformPage } from './TransformPage';
 export { IdiomsPage } from './IdiomsPage';
+export { FullPage } from './FullPage';

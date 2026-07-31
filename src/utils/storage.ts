@@ -123,7 +123,15 @@ export function addMistake(progress: UserProgress, mistake: MistakeRecord): User
 }
 
 export function normalizeAnswer(answer: string): string {
-  return answer.trim().toLowerCase().normalize('NFC');
+  return answer
+    .trim()
+    .toLowerCase()
+    .normalize('NFC')
+    // Remove pontuação: ¿ ? ¡ ! . , ; : " ' « » ( ) [ ] - —
+    .replace(/[¿?¡!.,;:"""''«»()\[\]\-—]/g, '')
+    // Normaliza espaços múltiplos
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 export function formatTime(seconds: number): string {

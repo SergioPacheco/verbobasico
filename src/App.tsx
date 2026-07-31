@@ -4,7 +4,6 @@ import { useProgress } from './hooks';
 import {
   HomePage,
   TrainingPage,
-  ConjugationPage,
   MistakesPage,
   GotchasPage,
   LyricsPage,
@@ -15,6 +14,7 @@ import {
   ClozePage,
   TransformPage,
   IdiomsPage,
+  FullPage,
 } from './pages';
 
 type Page =
@@ -33,10 +33,54 @@ type Page =
   | { type: 'idioms' };
 
 export default function App() {
-  const [page, setPage] = useState<Page>({ type: 'home' });
+  const [page, setPage] = useState<Page>({ type: 'conjugation' });
   const progressHook = useProgress();
 
-  const goHome = () => setPage({ type: 'home' });
+  const handleNavigate = (pageId: string) => {
+    switch (pageId) {
+      case 'home':
+        setPage({ type: 'home' });
+        break;
+      case 'training':
+        setPage({ type: 'training' });
+        break;
+      case 'conjugation':
+        setPage({ type: 'conjugation' });
+        break;
+      case 'listening':
+        setPage({ type: 'listening' });
+        break;
+      case 'speed':
+        setPage({ type: 'speed' });
+        break;
+      case 'dialogue':
+        setPage({ type: 'dialogue' });
+        break;
+      case 'cloze':
+        setPage({ type: 'cloze' });
+        break;
+      case 'transform':
+        setPage({ type: 'transform' });
+        break;
+      case 'idioms':
+        setPage({ type: 'idioms' });
+        break;
+      case 'gotchas':
+        setPage({ type: 'gotchas' });
+        break;
+      case 'lyrics':
+        setPage({ type: 'lyrics' });
+        break;
+      case 'vocabulary':
+        setPage({ type: 'vocabulary' });
+        break;
+      case 'mistakes':
+        setPage({ type: 'mistakes' });
+        break;
+    }
+  };
+
+  const goBack = () => setPage({ type: 'conjugation' });
 
   switch (page.type) {
     case 'training':
@@ -44,17 +88,19 @@ export default function App() {
         <TrainingPage
           situation={page.situation}
           phraseIds={page.phraseIds}
-          onBack={goHome}
+          onBack={goBack}
+          onNavigate={handleNavigate}
           progressHook={progressHook}
         />
       );
     case 'conjugation':
-      return <ConjugationPage onBack={goHome} />;
+      return <FullPage onNavigate={handleNavigate} />;
     case 'mistakes':
       return (
         <MistakesPage
           progress={progressHook.progress}
-          onBack={goHome}
+          onBack={goBack}
+          onNavigate={handleNavigate}
           onClearMistakes={progressHook.clearMistakes}
           onPracticeMistakes={() => {
             const ids = progressHook.progress.mistakes.map((m) => m.phraseId);
@@ -63,27 +109,28 @@ export default function App() {
         />
       );
     case 'gotchas':
-      return <GotchasPage onBack={goHome} />;
+      return <GotchasPage onBack={goBack} onNavigate={handleNavigate} />;
     case 'lyrics':
-      return <LyricsPage onBack={goHome} />;
+      return <LyricsPage onBack={goBack} onNavigate={handleNavigate} />;
     case 'vocabulary':
-      return <VocabularyPage onBack={goHome} />;
+      return <VocabularyPage onBack={goBack} onNavigate={handleNavigate} />;
     case 'listening':
-      return <ListeningPage onBack={goHome} />;
+      return <ListeningPage onBack={goBack} onNavigate={handleNavigate} />;
     case 'speed':
-      return <SpeedDrillPage onBack={goHome} />;
+      return <SpeedDrillPage onBack={goBack} onNavigate={handleNavigate} />;
     case 'dialogue':
-      return <DialoguePage onBack={goHome} />;
+      return <DialoguePage onBack={goBack} onNavigate={handleNavigate} />;
     case 'cloze':
-      return <ClozePage onBack={goHome} />;
+      return <ClozePage onBack={goBack} onNavigate={handleNavigate} />;
     case 'transform':
-      return <TransformPage onBack={goHome} />;
+      return <TransformPage onBack={goBack} onNavigate={handleNavigate} />;
     case 'idioms':
-      return <IdiomsPage onBack={goHome} />;
+      return <IdiomsPage onBack={goBack} onNavigate={handleNavigate} />;
     default:
       return (
         <HomePage
           progress={progressHook.progress}
+          onNavigate={handleNavigate}
           onStartDaily={() => setPage({ type: 'training' })}
           onStartSituation={(situation) => setPage({ type: 'training', situation })}
           onViewGotchas={() => setPage({ type: 'gotchas' })}
