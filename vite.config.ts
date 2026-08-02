@@ -2,8 +2,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
-  base: '/verbobasico/',
+export default defineConfig(({ mode }) => ({
+  base: mode === 'production' ? '/verbobasico/' : '/',
   plugins: [react()],
   test: {
     globals: true,
@@ -18,4 +18,4 @@ export default defineConfig({
       exclude: ['src/test/**', 'src/**/*.d.ts', 'src/main.tsx'],
     },
   },
-});
+}));

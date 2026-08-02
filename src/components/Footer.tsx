@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 
 const quickLinks = [
+  { path: '/home', label: 'Início' },
   { path: '/training', label: 'Treino' },
   { path: '/conjugation', label: 'Conjugação' },
+  { path: '/conversation', label: 'Conversação' },
   { path: '/gotchas', label: 'Pegadinhas' },
   { path: '/grammar', label: 'Gramática' },
 ];

@@ -8,11 +8,12 @@ interface HeaderProps {
 }
 
 const navItems = [
+  { path: '/home', label: 'Início', icon: '🏠' },
   { path: '/training', label: 'Treino', icon: '🎯' },
   { path: '/conjugation', label: 'Conjugação', icon: '📖' },
+  { path: '/conversation', label: 'Conversação', icon: '🗣️' },
   { path: '/gotchas', label: 'Pegadinhas', icon: '⚠️' },
   { path: '/grammar', label: 'Gramática', icon: '📚' },
-  { path: '/reading', label: 'Leitura', icon: '📄' },
 ];
 
 const menuGroups = [
