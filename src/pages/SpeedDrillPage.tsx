@@ -3,6 +3,7 @@ import { contextualPhrases } from '../data/phrases';
 import { normalizeAnswer } from '../utils';
 import type { ContextualPhrase } from '../types';
 import { Header } from '../components';
+import { useSoundEffects } from '../hooks';
 
 const TOTAL_TIME = 60;
 
@@ -11,6 +12,7 @@ function shuffleAll(): ContextualPhrase[] {
 }
 
 export function SpeedDrillPage() {
+  const { playCorrect, playWrong, playSuccess } = useSoundEffects();
   const [started, setStarted] = useState(false);
   const [done, setDone] = useState(false);
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
@@ -28,7 +30,8 @@ export function SpeedDrillPage() {
   const endGame = useCallback(() => {
     setDone(true);
     if (timerRef.current) clearInterval(timerRef.current);
-  }, []);
+    playSuccess();
+  }, [playSuccess]);
 
   useEffect(() => {
     if (started && !done) {
@@ -80,6 +83,7 @@ export function SpeedDrillPage() {
     if (!phrase) return;
 
     if (normalizeAnswer(val) === normalizeAnswer(phrase.conjugation)) {
+      playCorrect();
       advance(true);
     }
   }
@@ -90,8 +94,10 @@ export function SpeedDrillPage() {
       if (!phrase) return;
 
       if (normalizeAnswer(input) === normalizeAnswer(phrase.conjugation)) {
+        playCorrect();
         advance(true);
       } else {
+        playWrong();
         setShowCorrect(true);
         setTimeout(() => {
           setShowCorrect(false);

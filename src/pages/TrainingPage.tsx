@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { Situation } from '../types';
 import { PRONOUN_LABELS, TENSE_LABELS, SITUATION_LABELS } from '../types';
-import { useTraining, useSpeech } from '../hooks';
+import { useTraining, useSpeech, useSoundEffects } from '../hooks';
 import { getMotivationalMessage, formatTime } from '../utils';
 import { useProgressContext } from '../context';
 import confetti from 'canvas-confetti';
@@ -38,6 +38,7 @@ export function TrainingPage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const { speak, isSupported: speechSupported } = useSpeech();
+  const { playCorrect, playWrong, playSuccess } = useSoundEffects();
 
   const handleBack = () => navigate('/conjugation');
 
@@ -74,6 +75,7 @@ export function TrainingPage() {
     setMessage(getMotivationalMessage(newStreak, correct));
 
     if (correct) {
+      playCorrect(); // Som de acerto
       if (newStreak >= 4 && newStreak % 5 === 0) {
         fireConfetti();
       }
@@ -82,6 +84,7 @@ export function TrainingPage() {
         updateSituationProgress(situation, 1);
       }
     } else {
+      playWrong(); // Som de erro
       setShakeError(true);
       setTimeout(() => setShakeError(false), 500);
       recordAnswer(false, {
@@ -100,6 +103,7 @@ export function TrainingPage() {
     if (isSessionComplete) {
       setSessionDone(true);
       if (timerRef.current) clearInterval(timerRef.current);
+      playSuccess(); // Som de conclusão
       fireConfetti();
       return;
     }

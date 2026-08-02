@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { normalizeAnswer } from '../utils';
 import { Header } from '../components';
+import { useSoundEffects } from '../hooks';
 
 interface ClozeText {
   id: string;
@@ -119,6 +120,7 @@ const CLOZE_TEXTS: ClozeText[] = [
 ];
 
 export function ClozePage() {
+  const { playCorrect, playWrong, playSuccess } = useSoundEffects();
   const [selectedText, setSelectedText] = useState<ClozeText | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -144,6 +146,17 @@ export function ClozePage() {
     }
     setResults(res);
     setSubmitted(true);
+    
+    // Play sound based on results
+    const correctCount = Object.values(res).filter(Boolean).length;
+    const totalCount = selectedText.blanks.length;
+    if (correctCount === totalCount) {
+      playSuccess();
+    } else if (correctCount >= totalCount / 2) {
+      playCorrect();
+    } else {
+      playWrong();
+    }
   }
 
   function allFilled() {

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { readingTexts } from '../data/readingTexts';
 import type { ReadingText } from '../data/readingTexts';
 import { Header } from '../components';

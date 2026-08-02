@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { normalizeAnswer } from '../utils';
 import { Header } from '../components';
+import { useSoundEffects } from '../hooks';
 
 type TargetTense = 'preteritoIndefinido' | 'futuroSimple' | 'condicional' | 'imperfecto';
 
@@ -126,6 +127,7 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export function TransformPage() {
+  const { playCorrect, playWrong, playSuccess } = useSoundEffects();
   const [queue] = useState(() => shuffle(EXERCISES).slice(0, 8));
   const [current, setCurrent] = useState(0);
   const [input, setInput] = useState('');
@@ -141,8 +143,10 @@ export function TransformPage() {
     if (correct) {
       setScore((s) => s + 1);
       setStatus('correct');
+      playCorrect();
     } else {
       setStatus('wrong');
+      playWrong();
     }
   }
 
@@ -150,6 +154,7 @@ export function TransformPage() {
     const next = current + 1;
     if (next >= queue.length) {
       setDone(true);
+      playSuccess();
       return;
     }
     setCurrent(next);

@@ -5,10 +5,12 @@ import { dialogues } from '../data/dialogues';
 import type { Dialogue } from '../data/dialogues';
 import { normalizeAnswer } from '../utils';
 import { Header } from '../components';
+import { useSoundEffects } from '../hooks';
 
 const SITUATIONS = Object.keys(SITUATION_LABELS) as Situation[];
 
 export function DialoguePage() {
+  const { playCorrect, playWrong, playSuccess } = useSoundEffects();
   const [selectedSituation, setSelectedSituation] = useState<Situation | null>(null);
   const [dialogue, setDialogue] = useState<Dialogue | null>(null);
   const [turnIndex, setTurnIndex] = useState(0);
@@ -63,8 +65,10 @@ export function DialoguePage() {
     if (correct) {
       setScore((s) => s + 1);
       setStatus('correct');
+      playCorrect();
     } else {
       setStatus('wrong');
+      playWrong();
     }
   }
 
@@ -76,6 +80,7 @@ export function DialoguePage() {
     if (nextIdx >= dialogue.turns.length) {
       setRevealedTurns(newRevealed);
       setDone(true);
+      playSuccess();
       return;
     }
 

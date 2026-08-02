@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { gotchas, falseCognates, andaluzWords } from '../data';
 import { idioms } from '../data/idioms';
 import type { Idiom } from '../data/idioms';
-import { useSpeech } from '../hooks';
+import { useSpeech, useSoundEffects } from '../hooks';
 import { Header } from '../components';
 
 type Tab = 'pegadinhas' | 'cognatos' | 'andaluz' | 'expressoes';
@@ -45,6 +45,7 @@ export function GotchasPage() {
   const [andaluzFilter, setAndaluzFilter] = useState<string>('all');
   const [idiomCategory, setIdiomCategory] = useState<IdiomCategory>('all');
   const { speak, isSupported: speechSupported } = useSpeech();
+  const { playCorrect, playWrong, playSuccess } = useSoundEffects();
 
   // Quiz state for idioms
   const [quizMode, setQuizMode] = useState(false);
@@ -72,13 +73,19 @@ export function GotchasPage() {
   function handleQuizAnswer(option: string) {
     if (selected) return;
     setSelected(option);
-    if (option === quizQueue[quizIdx].meaning) setScore((s) => s + 1);
+    if (option === quizQueue[quizIdx].meaning) {
+      setScore((s) => s + 1);
+      playCorrect();
+    } else {
+      playWrong();
+    }
   }
 
   function handleQuizNext() {
     const next = quizIdx + 1;
     if (next >= quizQueue.length) {
       setQuizDone(true);
+      playSuccess();
       return;
     }
     setQuizIdx(next);

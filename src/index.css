@@ -21,17 +21,11 @@
     min-height: 100dvh; /* Dynamic viewport height for mobile */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    padding-bottom: 60px; /* Space for bottom nav */
   }
 
   #root {
     min-height: 100vh;
     min-height: 100dvh;
-  }
-
-  /* Safe area for iOS notch/home indicator */
-  .safe-area-bottom {
-    padding-bottom: env(safe-area-inset-bottom, 0);
   }
 }
 

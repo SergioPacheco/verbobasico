@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useSpeech } from '../hooks';
+import { useSpeech, useSoundEffects } from '../hooks';
 import { contextualPhrases } from '../data/phrases';
 import { normalizeAnswer } from '../utils';
 import { Header } from '../components';
@@ -13,6 +13,7 @@ function pickPhrases() {
 
 export function ListeningPage() {
   const { speak, isSupported } = useSpeech();
+  const { playCorrect, playWrong, playSuccess } = useSoundEffects();
   const [sessionPhrases] = useState(pickPhrases);
   const [current, setCurrent] = useState(0);
   const [input, setInput] = useState('');
@@ -44,9 +45,11 @@ export function ListeningPage() {
 
     const correct = normalizeAnswer(input) === normalizeAnswer(phrase.spanish);
     if (correct) {
+      playCorrect();
       setScore((s) => s + 1);
       setStatus('correct');
     } else {
+      playWrong();
       setStatus('wrong');
     }
   }
@@ -54,6 +57,7 @@ export function ListeningPage() {
   function handleNext() {
     const nextIndex = current + 1;
     if (nextIndex >= SESSION_SIZE) {
+      playSuccess();
       setStatus('done');
     } else {
       setCurrent(nextIndex);
