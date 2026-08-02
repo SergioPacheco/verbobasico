@@ -1,197 +1,138 @@
 import { useState } from 'react';
-import type { LyricEntry, LyricLine, LyricVerb } from '../types';
-import { TENSE_COLORS } from '../types';
 import { lyrics } from '../data';
-import { useSpeech } from '../hooks';
+import { MUSIC_CATEGORIES } from '../types';
 import { Header } from '../components';
 
-interface LyricsPageProps {
-  onBack: () => void;
-  onNavigate: (page: string) => void;
-}
+type CategoryFilter = 'all' | 'latino' | 'movida80' | 'cantautor' | 'flamenco' | 'pop2000' | 'rock';
 
-function HighlightedLine({ line }: { line: LyricLine }) {
-  const [activeVerb, setActiveVerb] = useState<LyricVerb | null>(null);
-
-  let remaining = line.text;
-  const segments: Array<{ text: string; verb?: LyricVerb }> = [];
-
-  for (const verb of line.verbs) {
-    const idx = remaining.toLowerCase().indexOf(verb.word.toLowerCase());
-    if (idx === -1) continue;
-
-    if (idx > 0) {
-      segments.push({ text: remaining.slice(0, idx) });
-    }
-    segments.push({ text: remaining.slice(idx, idx + verb.word.length), verb });
-    remaining = remaining.slice(idx + verb.word.length);
-  }
-  if (remaining) {
-    segments.push({ text: remaining });
-  }
-
+function SpotifyPlayer({ trackId, title }: { trackId: string; title: string }) {
   return (
-    <div className="relative">
-      <p className="text-lg leading-relaxed">
-        {segments.map((seg, i) =>
-          seg.verb ? (
-            <span
-              key={i}
-              className={`relative cursor-pointer font-semibold px-1 py-0.5 rounded ${TENSE_COLORS[seg.verb.tense].bg} ${TENSE_COLORS[seg.verb.tense].text} hover:ring-2 hover:ring-offset-1 transition-all`}
-              onMouseEnter={() => setActiveVerb(seg.verb!)}
-              onMouseLeave={() => setActiveVerb(null)}
-              onClick={() => setActiveVerb(activeVerb === seg.verb ? null : seg.verb!)}
-              role="button"
-              tabIndex={0}
-              aria-label={`${seg.text}: verbo ${seg.verb.infinitive}, ${TENSE_COLORS[seg.verb.tense].label}`}
-            >
-              {seg.text}
-            </span>
-          ) : (
-            <span key={i} className="text-gray-800">{seg.text}</span>
-          )
-        )}
-      </p>
-
-      {activeVerb && (
-        <div className="absolute left-0 top-full mt-1 z-10 bg-white border border-gray-200 rounded-xl shadow-lg p-3 text-sm animate-fade-in min-w-[200px]">
-          <div className="flex items-center gap-2 mb-1">
-            <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${TENSE_COLORS[activeVerb.tense].bg} ${TENSE_COLORS[activeVerb.tense].text}`}>
-              {TENSE_COLORS[activeVerb.tense].label}
-            </span>
-          </div>
-          <p className="font-semibold text-gray-900">
-            {activeVerb.word} → <span className="text-spain-red">{activeVerb.infinitive}</span>
-          </p>
-          <p className="text-gray-500 text-xs mt-0.5">
-            🇧🇷 {activeVerb.translation}
-          </p>
-        </div>
-      )}
-    </div>
+    <iframe
+      src={`https://open.spotify.com/embed/track/${trackId}?utm_source=generator&theme=0`}
+      width="100%"
+      height="152"
+      frameBorder="0"
+      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+      loading="lazy"
+      title={`Spotify player - ${title}`}
+      className="rounded-xl"
+    />
   );
 }
 
-function LyricCard({ entry }: { entry: LyricEntry }) {
-  const [expanded, setExpanded] = useState(false);
-  const { speak, isSupported } = useSpeech();
+export function LyricsPage() {
+  const [category, setCategory] = useState<CategoryFilter>('all');
 
-  const typeIcon = entry.type === 'musica' ? '🎵' : entry.type === 'poesia' ? '📜' : '💬';
+  const filtered = category === 'all' 
+    ? lyrics 
+    : lyrics.filter((l) => l.category === category);
 
-  return (
-    <div className="card animate-slide-up">
-      <div
-        className="flex items-start justify-between cursor-pointer"
-        onClick={() => setExpanded(!expanded)}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => e.key === 'Enter' && setExpanded(!expanded)}
-        aria-expanded={expanded}
-      >
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <span>{typeIcon}</span>
-            <h3 className="font-bold text-gray-900">{entry.title}</h3>
-          </div>
-          <p className="text-sm text-gray-500">{entry.artist}</p>
-        </div>
-        <span className="text-gray-400 text-xl">{expanded ? '−' : '+'}</span>
-      </div>
-
-      {expanded && (
-        <div className="mt-4 animate-fade-in" onClick={(e) => e.stopPropagation()}>
-          <p className="text-sm text-gray-600 bg-gray-50 rounded-lg p-3 mb-4 italic">
-            {entry.context}
-          </p>
-
-          <div className="space-y-3 mb-4 border-l-4 border-spain-yellow pl-4">
-            {entry.lines.map((line, i) => (
-              <HighlightedLine key={i} line={line} />
-            ))}
-          </div>
-
-          <div className="bg-blue-50 rounded-xl p-3 mb-3">
-            <p className="text-xs font-semibold text-blue-700 mb-1">🇧🇷 Tradução:</p>
-            <p className="text-sm text-blue-800">{entry.translation}</p>
-          </div>
-
-          {isSupported && (
-            <button
-              onClick={() => speak(entry.lines.map((l) => l.text).join('. '))}
-              className="btn-ghost w-full flex items-center justify-center gap-2 text-sm"
-              aria-label="Ouvir em espanhol"
-            >
-              🔊 Ouvir em espanhol
-            </button>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-export function LyricsPage({ onBack, onNavigate }: LyricsPageProps) {
-  const [filter, setFilter] = useState<'all' | 'musica' | 'poesia' | 'refran'>('all');
-
-  const filtered = filter === 'all' ? lyrics : lyrics.filter((l) => l.type === filter);
+  const categories: Array<{ key: CategoryFilter; emoji: string; name: string }> = [
+    { key: 'all', emoji: '📋', name: 'Todas' },
+    ...Object.entries(MUSIC_CATEGORIES).map(([key, val]) => ({
+      key: key as CategoryFilter,
+      emoji: val.emoji,
+      name: val.name,
+    })),
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-      <Header
-        title="🎵 Música"
-        subtitle="Verbos em letras"
-        onNavigate={onNavigate}
-        showBack
-        onBack={onBack}
-      />
+      <Header title="🎵 Música" subtitle={`${lyrics.length} músicas para aprender`} />
 
       <div className="max-w-2xl mx-auto px-4 py-4">
-        <div className="card mb-6 animate-fade-in">
-          <p className="text-gray-500 text-sm mb-4">
-            Toque nos verbos <span className="bg-blue-100 text-blue-800 px-1 rounded">destacados</span> para ver o tempo verbal e a tradução.
+        {/* Info */}
+        <div className="card mb-4 border-2 border-green-200 animate-fade-in">
+          <p className="text-gray-600 text-sm">
+            🎧 Ouça no <strong>Spotify</strong>. Se estiver logado, as <strong>letras sincronizadas</strong> aparecem automaticamente!
           </p>
-
-          <div className="flex flex-wrap gap-2 mb-4">
-            {Object.entries(TENSE_COLORS).slice(0, 6).map(([, color]) => (
-              <span key={color.label} className={`text-xs px-2 py-1 rounded-full ${color.bg} ${color.text}`}>
-                {color.label}
-              </span>
-            ))}
-          </div>
-
-          <div className="flex gap-2 flex-wrap">
-            {([['all', '📋 Todos'], ['musica', '🎵 Músicas'], ['poesia', '📜 Poesia'], ['refran', '💬 Refranes']] as const).map(
-              ([value, label]) => (
-                <button
-                  key={value}
-                  onClick={() => setFilter(value)}
-                  className={`py-1.5 px-3 rounded-lg text-xs font-medium transition-all ${
-                    filter === value
-                      ? 'bg-spain-red text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                  aria-pressed={filter === value}
-                >
-                  {label}
-                </button>
-              )
-            )}
-          </div>
         </div>
 
-        <div className="space-y-4">
-          {filtered.map((entry, i) => (
-            <div key={entry.id} style={{ animationDelay: `${i * 0.05}s` }}>
-              <LyricCard entry={entry} />
-            </div>
+        {/* Category Tabs */}
+        <div className="flex gap-1.5 overflow-x-auto pb-3 mb-4 scrollbar-hide">
+          {categories.map((cat) => (
+            <button
+              key={cat.key}
+              onClick={() => setCategory(cat.key)}
+              className={`whitespace-nowrap py-2 px-3 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
+                category === cat.key
+                  ? 'bg-spain-red text-white shadow-md'
+                  : 'bg-white text-gray-600 border border-gray-200 hover:border-spain-red/30'
+              }`}
+              aria-pressed={category === cat.key}
+            >
+              <span>{cat.emoji}</span>
+              <span>{cat.name}</span>
+              {cat.key !== 'all' && (
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                  category === cat.key ? 'bg-white/20' : 'bg-gray-100'
+                }`}>
+                  {lyrics.filter(l => l.category === cat.key).length}
+                </span>
+              )}
+            </button>
           ))}
+        </div>
+
+        {/* Music Cards */}
+        <div className="space-y-4">
+          {filtered.map((entry, i) => {
+            const catInfo = MUSIC_CATEGORIES[entry.category];
+            return (
+              <div
+                key={entry.id}
+                className="card animate-slide-up"
+                style={{ animationDelay: `${i * 0.03}s` }}
+              >
+                {/* Header */}
+                <div className="flex items-start justify-between mb-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg">🎵</span>
+                      <h3 className="font-bold text-gray-900">{entry.title}</h3>
+                    </div>
+                    <p className="text-sm text-gray-500">{entry.artist}</p>
+                  </div>
+                  <span className={`text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600`}>
+                    {catInfo?.emoji} {catInfo?.name}
+                  </span>
+                </div>
+
+                {/* Spotify Player */}
+                {entry.spotifyId ? (
+                  <SpotifyPlayer trackId={entry.spotifyId} title={entry.title} />
+                ) : (
+                  <div className="bg-gray-100 rounded-xl p-4 text-center text-gray-500 text-sm">
+                    🎵 Player não disponível
+                  </div>
+                )}
+
+                {/* Context & Translation */}
+                <div className="mt-3 flex flex-col gap-2">
+                  <p className="text-sm text-gray-600 italic">
+                    {entry.context}
+                  </p>
+                  <div className="bg-blue-50 rounded-lg p-2">
+                    <p className="text-xs text-blue-700">
+                      🇧🇷 <span className="font-medium">{entry.translation}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {filtered.length === 0 && (
           <div className="text-center py-8 text-gray-500">
-            Nenhum conteúdo nesta categoria ainda.
+            Nenhuma música nesta categoria.
           </div>
         )}
+
+        {/* Stats footer */}
+        <div className="mt-6 text-center text-xs text-gray-400">
+          {filtered.length} de {lyrics.length} músicas
+        </div>
       </div>
     </div>
   );

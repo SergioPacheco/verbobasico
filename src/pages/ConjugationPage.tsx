@@ -1,19 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { Verb, TenseKey, Pronoun } from '../types';
 import { TENSE_LABELS, PRONOUN_LABELS } from '../types';
 import { verbs, getPronunciation } from '../data';
 import { useSpeech } from '../hooks';
-
-interface ConjugationPageProps {
-  onBack: () => void;
-}
 
 const PRONOUNS: Pronoun[] = ['yo', 'tu', 'el', 'nosotros', 'vosotros', 'ellos'];
 const AVAILABLE_TENSES: TenseKey[] = ['presente', 'preteritoIndefinido', 'futuroSimple', 'preteritoPerfecto', 'imperfecto', 'condicional'];
 
 type PronMode = 'off' | 'br' | 'ipa';
 
-export function ConjugationPage({ onBack }: ConjugationPageProps) {
+export function ConjugationPage() {
+  const navigate = useNavigate();
   const [selectedVerb, setSelectedVerb] = useState<Verb>(verbs[0]);
   const [selectedTense, setSelectedTense] = useState<TenseKey>('presente');
   const [pronMode, setPronMode] = useState<PronMode>('br');
@@ -23,7 +21,7 @@ export function ConjugationPage({ onBack }: ConjugationPageProps) {
 
   return (
     <div className="min-h-screen px-4 py-6 max-w-lg mx-auto">
-      <button onClick={onBack} className="btn-ghost mb-4" aria-label="Voltar">
+      <button onClick={() => navigate('/conjugation')} className="btn-ghost mb-4" aria-label="Voltar">
         ← Voltar
       </button>
 

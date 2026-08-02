@@ -4,18 +4,13 @@ import { normalizeAnswer } from '../utils';
 import type { ContextualPhrase } from '../types';
 import { Header } from '../components';
 
-interface SpeedDrillPageProps {
-  onBack: () => void;
-  onNavigate: (page: string) => void;
-}
-
 const TOTAL_TIME = 60;
 
 function shuffleAll(): ContextualPhrase[] {
   return [...contextualPhrases].sort(() => Math.random() - 0.5);
 }
 
-export function SpeedDrillPage({ onBack, onNavigate }: SpeedDrillPageProps) {
+export function SpeedDrillPage() {
   const [started, setStarted] = useState(false);
   const [done, setDone] = useState(false);
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
@@ -119,7 +114,7 @@ export function SpeedDrillPage({ onBack, onNavigate }: SpeedDrillPageProps) {
   if (!started) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-        <Header title="⚡ Speed Drill" onNavigate={onNavigate} showBack onBack={onBack} />
+        <Header title="⚡ Speed Drill" />
         <div className="flex items-center justify-center px-4 py-10">
           <div className="card max-w-sm w-full text-center animate-slide-up">
             <p className="text-5xl mb-4">⚡</p>
@@ -151,7 +146,7 @@ export function SpeedDrillPage({ onBack, onNavigate }: SpeedDrillPageProps) {
     const pct = total > 0 ? Math.round((correct / total) * 100) : 0;
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-        <Header title="⚡ Speed Drill" onNavigate={onNavigate} showBack onBack={onBack} />
+        <Header title="⚡ Speed Drill" />
         <div className="flex items-center justify-center px-4 py-10">
           <div className="card max-w-sm w-full text-center animate-slide-up">
             <p className="text-5xl mb-3">
@@ -200,9 +195,6 @@ export function SpeedDrillPage({ onBack, onNavigate }: SpeedDrillPageProps) {
       <Header
         title="⚡ Speed Drill"
         subtitle={`✅ ${correct} | #${total + 1}`}
-        onNavigate={onNavigate}
-        showBack
-        onBack={endGame}
       />
 
       <div className="max-w-2xl mx-auto px-4 py-4">

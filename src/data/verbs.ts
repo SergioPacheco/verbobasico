@@ -1,6 +1,7 @@
 import type { Verb } from '../types';
+import { VERB_FREQUENCY_ORDER } from './verbFrequency';
 
-export const verbs: Verb[] = [
+const verbsUnsorted: Verb[] = [
   {
     infinitive: 'ser',
     translation: 'ser',
@@ -527,3 +528,13 @@ export const verbs: Verb[] = [
     },
   },
 ];
+
+// Ordenar verbos por frequência de uso
+export const verbs: Verb[] = verbsUnsorted.sort((a, b) => {
+  const indexA = VERB_FREQUENCY_ORDER.indexOf(a.infinitive);
+  const indexB = VERB_FREQUENCY_ORDER.indexOf(b.infinitive);
+  // Se não estiver na lista de frequência, vai para o final
+  const posA = indexA === -1 ? 999 : indexA;
+  const posB = indexB === -1 ? 999 : indexB;
+  return posA - posB;
+});

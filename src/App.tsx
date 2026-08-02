@@ -1,149 +1,102 @@
-import { useState } from 'react';
-import type { Situation } from './types';
-import { useProgress } from './hooks';
-import {
-  HomePage,
-  TrainingPage,
-  MistakesPage,
-  GotchasPage,
-  LyricsPage,
-  VocabularyPage,
-  ListeningPage,
-  SpeedDrillPage,
-  DialoguePage,
-  ClozePage,
-  TransformPage,
-  IdiomsPage,
-  FullPage,
-} from './pages';
+import { Suspense, lazy } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { ProgressProvider } from './context';
+import { ErrorBoundary, Spinner } from './components';
 
-type Page =
-  | { type: 'home' }
-  | { type: 'training'; situation?: Situation; phraseIds?: string[] }
-  | { type: 'conjugation' }
-  | { type: 'mistakes' }
-  | { type: 'gotchas' }
-  | { type: 'lyrics' }
-  | { type: 'vocabulary' }
-  | { type: 'listening' }
-  | { type: 'speed' }
-  | { type: 'dialogue' }
-  | { type: 'cloze' }
-  | { type: 'transform' }
-  | { type: 'idioms' };
+// Lazy load all pages for code splitting
+const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
+const TrainingPage = lazy(() =>
+  import('./pages/TrainingPage').then((m) => ({ default: m.TrainingPage }))
+);
+const FullPage = lazy(() => import('./pages/FullPage').then((m) => ({ default: m.FullPage })));
+const MistakesPage = lazy(() =>
+  import('./pages/MistakesPage').then((m) => ({ default: m.MistakesPage }))
+);
+const GotchasPage = lazy(() =>
+  import('./pages/GotchasPage').then((m) => ({ default: m.GotchasPage }))
+);
+const LyricsPage = lazy(() => import('./pages/LyricsPage').then((m) => ({ default: m.LyricsPage })));
+const ListeningPage = lazy(() =>
+  import('./pages/ListeningPage').then((m) => ({ default: m.ListeningPage }))
+);
+const SpeedDrillPage = lazy(() =>
+  import('./pages/SpeedDrillPage').then((m) => ({ default: m.SpeedDrillPage }))
+);
+const DialoguePage = lazy(() =>
+  import('./pages/DialoguePage').then((m) => ({ default: m.DialoguePage }))
+);
+const ClozePage = lazy(() => import('./pages/ClozePage').then((m) => ({ default: m.ClozePage })));
+const TransformPage = lazy(() =>
+  import('./pages/TransformPage').then((m) => ({ default: m.TransformPage }))
+);
+const ConversationPage = lazy(() =>
+  import('./pages/ConversationPage').then((m) => ({ default: m.ConversationPage }))
+);
+const GrammarPage = lazy(() =>
+  import('./pages/GrammarPage').then((m) => ({ default: m.GrammarPage }))
+);
+const PronunciationPage = lazy(() =>
+  import('./pages/PronunciationPage').then((m) => ({ default: m.PronunciationPage }))
+);
+const ReadingPage = lazy(() =>
+  import('./pages/ReadingPage').then((m) => ({ default: m.ReadingPage }))
+);
+const RefranesPage = lazy(() =>
+  import('./pages/RefranesPage').then((m) => ({ default: m.RefranesPage }))
+);
+
+// Loading fallback component
+function PageLoader() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50 flex items-center justify-center">
+      <div className="text-center">
+        <Spinner size="lg" />
+        <p className="mt-4 text-gray-600">Cargando...</p>
+      </div>
+    </div>
+  );
+}
 
 export default function App() {
-  const [page, setPage] = useState<Page>({ type: 'conjugation' });
-  const progressHook = useProgress();
+  return (
+    <ErrorBoundary>
+      <ProgressProvider>
+        <BrowserRouter>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              {/* Main routes */}
+              <Route path="/" element={<Navigate to="/conjugation" replace />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/conjugation" element={<FullPage />} />
+              <Route path="/training" element={<TrainingPage />} />
+              <Route path="/mistakes" element={<MistakesPage />} />
 
-  const handleNavigate = (pageId: string) => {
-    switch (pageId) {
-      case 'home':
-        setPage({ type: 'home' });
-        break;
-      case 'training':
-        setPage({ type: 'training' });
-        break;
-      case 'conjugation':
-        setPage({ type: 'conjugation' });
-        break;
-      case 'listening':
-        setPage({ type: 'listening' });
-        break;
-      case 'speed':
-        setPage({ type: 'speed' });
-        break;
-      case 'dialogue':
-        setPage({ type: 'dialogue' });
-        break;
-      case 'cloze':
-        setPage({ type: 'cloze' });
-        break;
-      case 'transform':
-        setPage({ type: 'transform' });
-        break;
-      case 'idioms':
-        setPage({ type: 'idioms' });
-        break;
-      case 'gotchas':
-        setPage({ type: 'gotchas' });
-        break;
-      case 'lyrics':
-        setPage({ type: 'lyrics' });
-        break;
-      case 'vocabulary':
-        setPage({ type: 'vocabulary' });
-        break;
-      case 'mistakes':
-        setPage({ type: 'mistakes' });
-        break;
-    }
-  };
+              {/* Practice modes */}
+              <Route path="/listening" element={<ListeningPage />} />
+              <Route path="/speed" element={<SpeedDrillPage />} />
+              <Route path="/dialogue" element={<DialoguePage />} />
+              <Route path="/cloze" element={<ClozePage />} />
+              <Route path="/transform" element={<TransformPage />} />
+              <Route path="/conversation" element={<ConversationPage />} />
 
-  const goBack = () => setPage({ type: 'conjugation' });
+              {/* Reference pages */}
+              <Route path="/gotchas" element={<GotchasPage />} />
+              <Route path="/lyrics" element={<LyricsPage />} />
+              <Route path="/grammar" element={<GrammarPage />} />
+              <Route path="/pronunciation" element={<PronunciationPage />} />
+              <Route path="/reading" element={<ReadingPage />} />
+              <Route path="/refranes" element={<RefranesPage />} />
 
-  switch (page.type) {
-    case 'training':
-      return (
-        <TrainingPage
-          situation={page.situation}
-          phraseIds={page.phraseIds}
-          onBack={goBack}
-          onNavigate={handleNavigate}
-          progressHook={progressHook}
-        />
-      );
-    case 'conjugation':
-      return <FullPage onNavigate={handleNavigate} />;
-    case 'mistakes':
-      return (
-        <MistakesPage
-          progress={progressHook.progress}
-          onBack={goBack}
-          onNavigate={handleNavigate}
-          onClearMistakes={progressHook.clearMistakes}
-          onPracticeMistakes={() => {
-            const ids = progressHook.progress.mistakes.map((m) => m.phraseId);
-            setPage({ type: 'training', phraseIds: [...new Set(ids)] });
-          }}
-        />
-      );
-    case 'gotchas':
-      return <GotchasPage onBack={goBack} onNavigate={handleNavigate} />;
-    case 'lyrics':
-      return <LyricsPage onBack={goBack} onNavigate={handleNavigate} />;
-    case 'vocabulary':
-      return <VocabularyPage onBack={goBack} onNavigate={handleNavigate} />;
-    case 'listening':
-      return <ListeningPage onBack={goBack} onNavigate={handleNavigate} />;
-    case 'speed':
-      return <SpeedDrillPage onBack={goBack} onNavigate={handleNavigate} />;
-    case 'dialogue':
-      return <DialoguePage onBack={goBack} onNavigate={handleNavigate} />;
-    case 'cloze':
-      return <ClozePage onBack={goBack} onNavigate={handleNavigate} />;
-    case 'transform':
-      return <TransformPage onBack={goBack} onNavigate={handleNavigate} />;
-    case 'idioms':
-      return <IdiomsPage onBack={goBack} onNavigate={handleNavigate} />;
-    default:
-      return (
-        <HomePage
-          progress={progressHook.progress}
-          onNavigate={handleNavigate}
-          onStartDaily={() => setPage({ type: 'training' })}
-          onStartSituation={(situation) => setPage({ type: 'training', situation })}
-          onViewGotchas={() => setPage({ type: 'gotchas' })}
-          onViewConjugation={() => setPage({ type: 'conjugation' })}
-          onViewLyrics={() => setPage({ type: 'lyrics' })}
-          onViewVocabulary={() => setPage({ type: 'vocabulary' })}
-          onViewListening={() => setPage({ type: 'listening' })}
-          onViewSpeed={() => setPage({ type: 'speed' })}
-          onViewDialogue={() => setPage({ type: 'dialogue' })}
-          onViewCloze={() => setPage({ type: 'cloze' })}
-          onViewTransform={() => setPage({ type: 'transform' })}
-          onViewIdioms={() => setPage({ type: 'idioms' })}
-        />
-      );
-  }
+              {/* Redirects for removed pages */}
+              <Route path="/vocabulary" element={<Navigate to="/gotchas" replace />} />
+              <Route path="/idioms" element={<Navigate to="/gotchas" replace />} />
+
+              {/* Fallback for unknown routes */}
+              <Route path="*" element={<Navigate to="/conjugation" replace />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </ProgressProvider>
+    </ErrorBoundary>
+  );
 }

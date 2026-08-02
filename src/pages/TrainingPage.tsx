@@ -1,27 +1,34 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { Situation } from '../types';
 import { PRONOUN_LABELS, TENSE_LABELS, SITUATION_LABELS } from '../types';
-import { useTraining, useProgress, useSpeech } from '../hooks';
+import { useTraining, useSpeech } from '../hooks';
 import { getMotivationalMessage, formatTime } from '../utils';
+import { useProgressContext } from '../context';
 import confetti from 'canvas-confetti';
 import { Header } from '../components';
 
-interface TrainingPageProps {
-  situation?: Situation;
-  phraseIds?: string[];
-  onBack: () => void;
-  onNavigate: (page: string) => void;
-  progressHook: ReturnType<typeof useProgress>;
-}
+export function TrainingPage() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const situation = searchParams.get('situation') as Situation | null;
+  const phraseIdsParam = searchParams.get('phraseIds');
+  const phraseIds = phraseIdsParam ? phraseIdsParam.split(',') : undefined;
 
-export function TrainingPage({ situation, phraseIds, onBack, onNavigate, progressHook }: TrainingPageProps) {
-  const { progress, recordAnswer, updateSituationProgress } = progressHook;
+  const { progress, recordAnswer, updateSituationProgress } = useProgressContext();
 
   const {
-    question, currentPhrase, isAnswered, isCorrect,
-    submitAnswer, nextQuestion,
-    sessionCorrect, sessionTotal, progressPercent, isSessionComplete,
-  } = useTraining({ situation, phraseIds });
+    question,
+    currentPhrase,
+    isAnswered,
+    isCorrect,
+    submitAnswer,
+    nextQuestion,
+    sessionCorrect,
+    sessionTotal,
+    progressPercent,
+    isSessionComplete,
+  } = useTraining({ situation: situation || undefined, phraseIds });
 
   const [inputValue, setInputValue] = useState('');
   const [message, setMessage] = useState('');
@@ -31,6 +38,8 @@ export function TrainingPage({ situation, phraseIds, onBack, onNavigate, progres
   const inputRef = useRef<HTMLInputElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const { speak, isSupported: speechSupported } = useSpeech();
+
+  const handleBack = () => navigate('/conjugation');
 
   useEffect(() => {
     timerRef.current = setInterval(() => {
@@ -105,17 +114,42 @@ export function TrainingPage({ situation, phraseIds, onBack, onNavigate, progres
     }
   };
 
+  // Handle case when no questions are available
+  if (!question && !sessionDone) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+        <Header title="🎯 Treino" />
+        <div className="flex items-center justify-center px-4 py-10">
+          <div className="card text-center w-full max-w-sm">
+            <span className="text-5xl block mb-4">🤔</span>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Sin preguntas disponibles</h2>
+            <p className="text-gray-500 mb-6">
+              {situation 
+                ? `No hay frases para el módulo "${SITUATION_LABELS[situation]?.name || situation}".`
+                : 'No se encontraron frases para practicar.'}
+            </p>
+            <button onClick={handleBack} className="btn-primary w-full">
+              ← Volver
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (sessionDone) {
     const accuracy = sessionTotal > 0 ? Math.round((sessionCorrect / sessionTotal) * 100) : 0;
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-        <Header title="🎯 Treino" onNavigate={onNavigate} showBack onBack={onBack} />
+        <Header title="🎯 Treino" />
         <div className="flex items-center justify-center px-4 py-10">
           <div className="card text-center w-full max-w-sm animate-bounce-in">
             <span className="text-5xl block mb-4">🎉</span>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">¡Sesión completada!</h2>
             <p className="text-gray-500 mb-6">
-              {situation ? `Módulo: ${SITUATION_LABELS[situation].emoji} ${SITUATION_LABELS[situation].name}` : 'Treino diário'}
+              {situation
+                ? `Módulo: ${SITUATION_LABELS[situation].emoji} ${SITUATION_LABELS[situation].name}`
+                : 'Treino diário'}
             </p>
 
             <div className="grid grid-cols-3 gap-4 mb-6">
@@ -133,7 +167,9 @@ export function TrainingPage({ situation, phraseIds, onBack, onNavigate, progres
               </div>
             </div>
 
-            <button onClick={onBack} className="btn-primary w-full">← Voltar</button>
+            <button onClick={handleBack} className="btn-primary w-full">
+              ← Voltar
+            </button>
           </div>
         </div>
       </div>
@@ -143,11 +179,13 @@ export function TrainingPage({ situation, phraseIds, onBack, onNavigate, progres
   if (!question || !currentPhrase) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-        <Header title="🎯 Treino" onNavigate={onNavigate} showBack onBack={onBack} />
+        <Header title="🎯 Treino" />
         <div className="flex items-center justify-center px-4 py-20">
           <div className="card text-center">
             <p className="text-gray-600 text-lg mb-4">Nenhuma frase disponível.</p>
-            <button onClick={onBack} className="btn-primary">Voltar</button>
+            <button onClick={handleBack} className="btn-primary">
+              Voltar
+            </button>
           </div>
         </div>
       </div>
@@ -157,11 +195,12 @@ export function TrainingPage({ situation, phraseIds, onBack, onNavigate, progres
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
       <Header
-        title={situation ? `${SITUATION_LABELS[situation].emoji} ${SITUATION_LABELS[situation].name}` : '🎯 Treino Diário'}
+        title={
+          situation
+            ? `${SITUATION_LABELS[situation].emoji} ${SITUATION_LABELS[situation].name}`
+            : '🎯 Treino Diário'
+        }
         subtitle={`⏱ ${formatTime(elapsedTime)} | 🔥${progress.currentStreak}`}
-        onNavigate={onNavigate}
-        showBack
-        onBack={onBack}
       />
 
       <div className="max-w-2xl mx-auto px-4 py-4">
@@ -197,9 +236,15 @@ export function TrainingPage({ situation, phraseIds, onBack, onNavigate, progres
           </div>
 
           <div className="flex items-center gap-2 flex-wrap text-xs text-gray-500 mb-4">
-            <span className="bg-gray-100 rounded-full px-2 py-1">verbo: <strong>{currentPhrase.verb}</strong></span>
-            <span className="bg-gray-100 rounded-full px-2 py-1">{PRONOUN_LABELS[currentPhrase.pronoun]}</span>
-            <span className="bg-gray-100 rounded-full px-2 py-1">{TENSE_LABELS[currentPhrase.tense]}</span>
+            <span className="bg-gray-100 rounded-full px-2 py-1">
+              verbo: <strong>{currentPhrase.verb}</strong>
+            </span>
+            <span className="bg-gray-100 rounded-full px-2 py-1">
+              {PRONOUN_LABELS[currentPhrase.pronoun]}
+            </span>
+            <span className="bg-gray-100 rounded-full px-2 py-1">
+              {TENSE_LABELS[currentPhrase.tense]}
+            </span>
             {question.verb.type === 'irregular' && (
               <span className="bg-red-100 text-red-700 rounded-full px-2 py-1">⚡ irregular</span>
             )}
@@ -228,7 +273,9 @@ export function TrainingPage({ situation, phraseIds, onBack, onNavigate, progres
             />
 
             {!isAnswered ? (
-              <button type="submit" disabled={!inputValue.trim()} className="btn-primary w-full">Verificar</button>
+              <button type="submit" disabled={!inputValue.trim()} className="btn-primary w-full">
+                Verificar
+              </button>
             ) : (
               <button type="button" onClick={handleNext} className="btn-primary w-full" autoFocus>
                 {isSessionComplete ? '🏁 Ver resultado' : 'Próxima →'}
@@ -238,7 +285,9 @@ export function TrainingPage({ situation, phraseIds, onBack, onNavigate, progres
         </div>
 
         {isAnswered && (
-          <div className={`card animate-bounce-in ${isCorrect ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
+          <div
+            className={`card animate-bounce-in ${isCorrect ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}
+          >
             <div className="flex items-start gap-3 mb-2">
               <span className="text-2xl">{isCorrect ? '✅' : '❌'}</span>
               <div className="flex-1">
@@ -262,7 +311,9 @@ export function TrainingPage({ situation, phraseIds, onBack, onNavigate, progres
 
             <div className="bg-white/60 rounded-lg p-3">
               <p className="text-sm text-gray-700 font-medium">🇪🇸 {currentPhrase.spanish}</p>
-              <p className="text-xs text-gray-500 mt-1">💡 <em>{question.verb.tip}</em></p>
+              <p className="text-xs text-gray-500 mt-1">
+                💡 <em>{question.verb.tip}</em>
+              </p>
             </div>
           </div>
         )}

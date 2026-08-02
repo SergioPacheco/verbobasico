@@ -2,11 +2,6 @@ import { useState } from 'react';
 import { normalizeAnswer } from '../utils';
 import { Header } from '../components';
 
-interface TransformPageProps {
-  onBack: () => void;
-  onNavigate: (page: string) => void;
-}
-
 type TargetTense = 'preteritoIndefinido' | 'futuroSimple' | 'condicional' | 'imperfecto';
 
 interface TransformExercise {
@@ -130,7 +125,7 @@ function shuffle<T>(arr: T[]): T[] {
   return [...arr].sort(() => Math.random() - 0.5);
 }
 
-export function TransformPage({ onBack, onNavigate }: TransformPageProps) {
+export function TransformPage() {
   const [queue] = useState(() => shuffle(EXERCISES).slice(0, 8));
   const [current, setCurrent] = useState(0);
   const [input, setInput] = useState('');
@@ -173,7 +168,7 @@ export function TransformPage({ onBack, onNavigate }: TransformPageProps) {
     const pct = Math.round((score / queue.length) * 100);
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-        <Header title="🔄 Transformação" onNavigate={onNavigate} showBack onBack={onBack} />
+        <Header title="🔄 Transformação" />
         <div className="flex items-center justify-center px-4 py-10">
           <div className="card max-w-sm w-full text-center animate-slide-up">
             <p className="text-5xl mb-3">{pct >= 80 ? '🏆' : pct >= 50 ? '🎯' : '💪'}</p>
@@ -195,13 +190,7 @@ export function TransformPage({ onBack, onNavigate }: TransformPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-      <Header
-        title="🔄 Transformação"
-        subtitle={`${current + 1}/${queue.length}`}
-        onNavigate={onNavigate}
-        showBack
-        onBack={onBack}
-      />
+      <Header title="🔄 Transformação" subtitle={`${current + 1}/${queue.length}`} />
 
       <div className="max-w-2xl mx-auto px-4 py-4">
         <div className="h-2 bg-gray-100 rounded-full mb-6">

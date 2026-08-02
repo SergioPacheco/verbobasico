@@ -4,11 +4,6 @@ import { contextualPhrases } from '../data/phrases';
 import { normalizeAnswer } from '../utils';
 import { Header } from '../components';
 
-interface ListeningPageProps {
-  onBack: () => void;
-  onNavigate: (page: string) => void;
-}
-
 const SESSION_SIZE = 10;
 
 function pickPhrases() {
@@ -16,7 +11,7 @@ function pickPhrases() {
   return shuffled.slice(0, SESSION_SIZE);
 }
 
-export function ListeningPage({ onBack, onNavigate }: ListeningPageProps) {
+export function ListeningPage() {
   const { speak, isSupported } = useSpeech();
   const [sessionPhrases] = useState(pickPhrases);
   const [current, setCurrent] = useState(0);
@@ -77,7 +72,7 @@ export function ListeningPage({ onBack, onNavigate }: ListeningPageProps) {
   if (!isSupported) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-        <Header title="🎧 Modo Escuta" onNavigate={onNavigate} showBack onBack={onBack} />
+        <Header title="🎧 Modo Escuta" />
         <div className="flex items-center justify-center px-4 py-20">
           <div className="card max-w-sm text-center">
             <p className="text-4xl mb-4">🔇</p>
@@ -95,7 +90,7 @@ export function ListeningPage({ onBack, onNavigate }: ListeningPageProps) {
     const pct = Math.round((score / SESSION_SIZE) * 100);
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-        <Header title="🎧 Modo Escuta" onNavigate={onNavigate} showBack onBack={onBack} />
+        <Header title="🎧 Modo Escuta" />
         <div className="flex items-center justify-center px-4 py-10">
           <div className="card max-w-sm w-full text-center animate-slide-up">
             <p className="text-5xl mb-3">{pct >= 80 ? '🏆' : pct >= 50 ? '🎯' : '💪'}</p>
@@ -112,7 +107,7 @@ export function ListeningPage({ onBack, onNavigate }: ListeningPageProps) {
                 }}
               />
             </div>
-            <button onClick={onBack} className="btn-primary w-full">
+            <button onClick={() => window.location.href = '/conjugation'} className="btn-primary w-full">
               ← Voltar
             </button>
           </div>
@@ -123,13 +118,7 @@ export function ListeningPage({ onBack, onNavigate }: ListeningPageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-      <Header
-        title="🎧 Modo Escuta"
-        subtitle={`${current + 1}/${SESSION_SIZE}`}
-        onNavigate={onNavigate}
-        showBack
-        onBack={onBack}
-      />
+      <Header title="🎧 Modo Escuta" subtitle={`${current + 1}/${SESSION_SIZE}`} />
 
       <div className="max-w-2xl mx-auto px-4 py-4">
         <div className="h-2 bg-gray-100 rounded-full mb-6">

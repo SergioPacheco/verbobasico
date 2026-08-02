@@ -2,11 +2,6 @@ import { useState } from 'react';
 import { normalizeAnswer } from '../utils';
 import { Header } from '../components';
 
-interface ClozePageProps {
-  onBack: () => void;
-  onNavigate: (page: string) => void;
-}
-
 interface ClozeText {
   id: string;
   title: string;
@@ -123,7 +118,7 @@ const CLOZE_TEXTS: ClozeText[] = [
   },
 ];
 
-export function ClozePage({ onBack, onNavigate }: ClozePageProps) {
+export function ClozePage() {
   const [selectedText, setSelectedText] = useState<ClozeText | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -162,7 +157,7 @@ export function ClozePage({ onBack, onNavigate }: ClozePageProps) {
   if (!selectedText) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-        <Header title="📝 Cloze Test" subtitle="Textos com lacunas" onNavigate={onNavigate} showBack onBack={onBack} />
+        <Header title="📝 Cloze Test" subtitle="Textos com lacunas" />
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="space-y-3">
             {CLOZE_TEXTS.map((text) => (
@@ -192,9 +187,6 @@ export function ClozePage({ onBack, onNavigate }: ClozePageProps) {
       <Header
         title={`${selectedText.emoji} ${selectedText.title}`}
         subtitle={submitted ? `${correctCount}/${totalCount}` : selectedText.situation}
-        onNavigate={onNavigate}
-        showBack
-        onBack={() => setSelectedText(null)}
       />
 
       <div className="max-w-2xl mx-auto px-4 py-4">

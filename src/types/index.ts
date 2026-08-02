@@ -189,11 +189,24 @@ export interface LyricEntry {
   id: string;
   title: string;
   artist: string;
-  type: 'musica' | 'poesia' | 'refran';
+  type: 'musica';
+  /** Categoria para filtro */
+  category: 'latino' | 'movida80' | 'cantautor' | 'flamenco' | 'pop2000' | 'rock';
   context: string;
   lines: LyricLine[];
   translation: string;
+  /** Spotify track ID para embed do player (opcional) */
+  spotifyId?: string;
 }
+
+export const MUSIC_CATEGORIES: Record<string, { emoji: string; name: string }> = {
+  latino: { emoji: '🌴', name: 'Latino' },
+  movida80: { emoji: '🎸', name: 'Movida 80s' },
+  cantautor: { emoji: '🎤', name: 'Cantautores' },
+  flamenco: { emoji: '💃', name: 'Flamenco' },
+  pop2000: { emoji: '✨', name: 'Pop 2000s' },
+  rock: { emoji: '🤘', name: 'Rock' },
+};
 
 export const TENSE_COLORS: Record<TenseKey, { bg: string; text: string; label: string }> = {
   presente: { bg: 'bg-blue-100', text: 'text-blue-800', label: 'Presente' },

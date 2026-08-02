@@ -6,14 +6,9 @@ import type { Dialogue } from '../data/dialogues';
 import { normalizeAnswer } from '../utils';
 import { Header } from '../components';
 
-interface DialoguePageProps {
-  onBack: () => void;
-  onNavigate: (page: string) => void;
-}
-
 const SITUATIONS = Object.keys(SITUATION_LABELS) as Situation[];
 
-export function DialoguePage({ onBack, onNavigate }: DialoguePageProps) {
+export function DialoguePage() {
   const [selectedSituation, setSelectedSituation] = useState<Situation | null>(null);
   const [dialogue, setDialogue] = useState<Dialogue | null>(null);
   const [turnIndex, setTurnIndex] = useState(0);
@@ -99,7 +94,7 @@ export function DialoguePage({ onBack, onNavigate }: DialoguePageProps) {
   if (!selectedSituation) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-        <Header title="💬 Diálogos" subtitle="Escolha uma situação" onNavigate={onNavigate} showBack onBack={onBack} />
+        <Header title="💬 Diálogos" subtitle="Escolha uma situação" />
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="grid grid-cols-2 gap-3">
             {SITUATIONS.map((sit) => {
@@ -128,7 +123,7 @@ export function DialoguePage({ onBack, onNavigate }: DialoguePageProps) {
     const pct = total > 0 ? Math.round((score / total) * 100) : 100;
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
-        <Header title="💬 Diálogos" onNavigate={onNavigate} showBack onBack={onBack} />
+        <Header title="💬 Diálogos" />
         <div className="flex items-center justify-center px-4 py-10">
           <div className="card max-w-sm w-full text-center animate-slide-up">
             <p className="text-5xl mb-3">{pct >= 80 ? '🎉' : '💪'}</p>
@@ -151,13 +146,7 @@ export function DialoguePage({ onBack, onNavigate }: DialoguePageProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50 flex flex-col">
-      <Header
-        title={dialogue.title}
-        subtitle={`${score}/${total}`}
-        onNavigate={onNavigate}
-        showBack
-        onBack={() => setSelectedSituation(null)}
-      />
+      <Header title={dialogue.title} subtitle={`${score}/${total}`} />
 
       <div className="flex-1 max-w-2xl mx-auto px-4 py-4 flex flex-col w-full">
         <div className="flex-1 space-y-3 mb-4 overflow-y-auto">
