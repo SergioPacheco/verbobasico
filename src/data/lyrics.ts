@@ -1,278 +1,75 @@
 import type { LyricEntry } from '../types';
 
 export const lyrics: LyricEntry[] = [
-  {
-    id: 'lyric-01',
-    title: 'Vivir Mi Vida',
-    artist: 'Marc Anthony',
-    type: 'musica',
-    context: 'Música muito popular na Espanha — sobre viver o momento e superar dificuldades.',
-    translation: 'Vou rir, vou dançar, viver minha vida. A vida é um carnaval e as penas se vão cantando.',
-    lines: [
-      {
-        text: 'Voy a reír, voy a bailar',
-        verbs: [
-          { word: 'Voy', infinitive: 'ir', tense: 'presente', pronoun: 'yo', translation: 'vou' },
-          { word: 'reír', infinitive: 'reír', tense: 'presente', pronoun: 'yo', translation: 'rir' },
-          { word: 'bailar', infinitive: 'bailar', tense: 'presente', pronoun: 'yo', translation: 'dançar' },
-        ],
-      },
-      {
-        text: 'Vivir mi vida, la la la la',
-        verbs: [
-          { word: 'Vivir', infinitive: 'vivir', tense: 'presente', pronoun: 'yo', translation: 'viver' },
-        ],
-      },
-      {
-        text: 'Voy a reír, voy a gozar',
-        verbs: [
-          { word: 'Voy', infinitive: 'ir', tense: 'presente', pronoun: 'yo', translation: 'vou' },
-          { word: 'gozar', infinitive: 'gozar', tense: 'presente', pronoun: 'yo', translation: 'aproveitar' },
-        ],
-      },
-      {
-        text: 'Vivir mi vida, la la la la',
-        verbs: [
-          { word: 'Vivir', infinitive: 'vivir', tense: 'presente', pronoun: 'yo', translation: 'viver' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'lyric-02',
-    title: 'La Vida Es Un Carnaval',
-    artist: 'Celia Cruz',
-    type: 'musica',
-    context: 'Clássico latino — frases do cotidiano sobre superar tristezas cantando.',
-    translation: 'Todo aquele que pensa que a vida é desigual, tem que saber que não é assim, que a vida é um carnaval.',
-    lines: [
-      {
-        text: 'Todo aquel que piense que la vida es desigual',
-        verbs: [
-          { word: 'piense', infinitive: 'pensar', tense: 'presente', pronoun: 'el', translation: 'pense' },
-          { word: 'es', infinitive: 'ser', tense: 'presente', pronoun: 'el', translation: 'é' },
-        ],
-      },
-      {
-        text: 'Tiene que saber que no es así',
-        verbs: [
-          { word: 'Tiene', infinitive: 'tener', tense: 'presente', pronoun: 'el', translation: 'tem' },
-          { word: 'saber', infinitive: 'saber', tense: 'presente', pronoun: 'el', translation: 'saber' },
-          { word: 'es', infinitive: 'ser', tense: 'presente', pronoun: 'el', translation: 'é' },
-        ],
-      },
-      {
-        text: 'Que la vida es un carnaval',
-        verbs: [
-          { word: 'es', infinitive: 'ser', tense: 'presente', pronoun: 'el', translation: 'é' },
-        ],
-      },
-      {
-        text: 'Y las penas se van cantando',
-        verbs: [
-          { word: 'van', infinitive: 'ir', tense: 'presente', pronoun: 'ellos', translation: 'vão' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'lyric-03',
-    title: 'Me Gustas Tú',
-    artist: 'Manu Chao',
-    type: 'musica',
-    context: 'Música que TODO brasileiro ouve nos bares da Espanha. Ótima para praticar "me gusta".',
-    translation: 'Me agrada andar de avião, me agrada viajar, me agrada a manhã, me agrada o vento, me agradas tu.',
-    lines: [
-      {
-        text: 'Me gusta los aviones, me gustas tú',
-        verbs: [
-          { word: 'gusta', infinitive: 'gustar', tense: 'presente', pronoun: 'el', translation: 'agrada' },
-          { word: 'gustas', infinitive: 'gustar', tense: 'presente', pronoun: 'tu', translation: 'agradas' },
-        ],
-      },
-      {
-        text: 'Me gusta viajar, me gustas tú',
-        verbs: [
-          { word: 'gusta', infinitive: 'gustar', tense: 'presente', pronoun: 'el', translation: 'agrada' },
-          { word: 'viajar', infinitive: 'viajar', tense: 'presente', pronoun: 'yo', translation: 'viajar' },
-          { word: 'gustas', infinitive: 'gustar', tense: 'presente', pronoun: 'tu', translation: 'agradas' },
-        ],
-      },
-      {
-        text: 'Me gusta la mañana, me gustas tú',
-        verbs: [
-          { word: 'gusta', infinitive: 'gustar', tense: 'presente', pronoun: 'el', translation: 'agrada' },
-          { word: 'gustas', infinitive: 'gustar', tense: 'presente', pronoun: 'tu', translation: 'agradas' },
-        ],
-      },
-      {
-        text: 'Me gusta el viento, me gustas tú',
-        verbs: [
-          { word: 'gusta', infinitive: 'gustar', tense: 'presente', pronoun: 'el', translation: 'agrada' },
-          { word: 'gustas', infinitive: 'gustar', tense: 'presente', pronoun: 'tu', translation: 'agradas' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'lyric-04',
-    title: 'Caminante No Hay Camino',
-    artist: 'Antonio Machado (poesia)',
-    type: 'poesia',
-    context: 'Poesia famosíssima de Machado — todo espanhol conhece. Usa presente e pretérito de forma linda.',
-    translation: 'Caminhante, não há caminho, o caminho se faz ao andar. Ao andar se faz o caminho, e ao olhar para trás se vê a trilha que nunca se voltará a pisar.',
-    lines: [
-      {
-        text: 'Caminante, no hay camino',
-        verbs: [
-          { word: 'hay', infinitive: 'haber', tense: 'presente', pronoun: 'el', translation: 'há/existe' },
-        ],
-      },
-      {
-        text: 'Se hace camino al andar',
-        verbs: [
-          { word: 'hace', infinitive: 'hacer', tense: 'presente', pronoun: 'el', translation: 'faz' },
-        ],
-      },
-      {
-        text: 'Al andar se hace camino',
-        verbs: [
-          { word: 'hace', infinitive: 'hacer', tense: 'presente', pronoun: 'el', translation: 'faz' },
-        ],
-      },
-      {
-        text: 'Y al volver la vista atrás',
-        verbs: [
-          { word: 'volver', infinitive: 'volver', tense: 'presente', pronoun: 'el', translation: 'voltar' },
-        ],
-      },
-      {
-        text: 'Se ve la senda que nunca se ha de volver a pisar',
-        verbs: [
-          { word: 've', infinitive: 'ver', tense: 'presente', pronoun: 'el', translation: 'vê' },
-          { word: 'ha', infinitive: 'haber', tense: 'presente', pronoun: 'el', translation: 'há de' },
-          { word: 'pisar', infinitive: 'pisar', tense: 'presente', pronoun: 'el', translation: 'pisar' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'lyric-05',
-    title: 'Bailando',
-    artist: 'Enrique Iglesias',
-    type: 'musica',
-    context: 'Hit mundial — usa gerúndio e presente o tempo todo. Perfeita para treinar o presente.',
-    translation: 'Com o teu corpo suave dançando, tu és o imã e eu sou o metal, vou me aproximando e vou armando o plano.',
-    lines: [
-      {
-        text: 'Yo te miro y se me corta la respiración',
-        verbs: [
-          { word: 'miro', infinitive: 'mirar', tense: 'presente', pronoun: 'yo', translation: 'olho' },
-          { word: 'corta', infinitive: 'cortar', tense: 'presente', pronoun: 'el', translation: 'corta' },
-        ],
-      },
-      {
-        text: 'Tú me miras y me sube la temperatura',
-        verbs: [
-          { word: 'miras', infinitive: 'mirar', tense: 'presente', pronoun: 'tu', translation: 'olhas' },
-          { word: 'sube', infinitive: 'subir', tense: 'presente', pronoun: 'el', translation: 'sobe' },
-        ],
-      },
-      {
-        text: 'Tú eres el imán y yo soy el metal',
-        verbs: [
-          { word: 'eres', infinitive: 'ser', tense: 'presente', pronoun: 'tu', translation: 'és' },
-          { word: 'soy', infinitive: 'ser', tense: 'presente', pronoun: 'yo', translation: 'sou' },
-        ],
-      },
-      {
-        text: 'Me voy acercando y voy armando el plan',
-        verbs: [
-          { word: 'voy', infinitive: 'ir', tense: 'presente', pronoun: 'yo', translation: 'vou' },
-          { word: 'voy', infinitive: 'ir', tense: 'presente', pronoun: 'yo', translation: 'vou' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'lyric-06',
-    title: 'Recuérdame (Coco)',
-    artist: 'Canção do filme Coco',
-    type: 'musica',
-    context: 'Música do filme Coco da Pixar — usa imperativo e futuro. Muito emocional e fácil de cantar.',
-    translation: 'Lembre de mim, hoje tenho que ir embora. Lembre de mim, não chores por favor. Mesmo que eu esteja longe de você, guarde-me no seu coração.',
-    lines: [
-      {
-        text: 'Recuérdame, hoy me tengo que ir, mi amor',
-        verbs: [
-          { word: 'Recuérdame', infinitive: 'recordar', tense: 'presente', pronoun: 'tu', translation: 'lembra de mim' },
-          { word: 'tengo', infinitive: 'tener', tense: 'presente', pronoun: 'yo', translation: 'tenho' },
-          { word: 'ir', infinitive: 'ir', tense: 'presente', pronoun: 'yo', translation: 'ir' },
-        ],
-      },
-      {
-        text: 'Recuérdame, no llores por favor',
-        verbs: [
-          { word: 'Recuérdame', infinitive: 'recordar', tense: 'presente', pronoun: 'tu', translation: 'lembra de mim' },
-          { word: 'llores', infinitive: 'llorar', tense: 'presente', pronoun: 'tu', translation: 'chores' },
-        ],
-      },
-      {
-        text: 'Aunque yo esté lejos de ti',
-        verbs: [
-          { word: 'esté', infinitive: 'estar', tense: 'presente', pronoun: 'yo', translation: 'esteja' },
-        ],
-      },
-      {
-        text: 'Guárdame en tu corazón',
-        verbs: [
-          { word: 'Guárdame', infinitive: 'guardar', tense: 'presente', pronoun: 'tu', translation: 'guarda-me' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'lyric-07',
-    title: 'Refranes Españoles',
-    artist: 'Ditos populares',
-    type: 'refran',
-    context: 'Refranes (provérbios) que os espanhóis usam no dia a dia. Ótimos para fixar verbos em contexto.',
-    translation: 'Provérbios espanhóis populares com verbos essenciais.',
-    lines: [
-      {
-        text: 'Quien tiene un amigo, tiene un tesoro',
-        verbs: [
-          { word: 'tiene', infinitive: 'tener', tense: 'presente', pronoun: 'el', translation: 'tem' },
-          { word: 'tiene', infinitive: 'tener', tense: 'presente', pronoun: 'el', translation: 'tem' },
-        ],
-      },
-      {
-        text: 'No es oro todo lo que reluce',
-        verbs: [
-          { word: 'es', infinitive: 'ser', tense: 'presente', pronoun: 'el', translation: 'é' },
-          { word: 'reluce', infinitive: 'relucir', tense: 'presente', pronoun: 'el', translation: 'reluz' },
-        ],
-      },
-      {
-        text: 'Más vale pájaro en mano que ciento volando',
-        verbs: [
-          { word: 'vale', infinitive: 'valer', tense: 'presente', pronoun: 'el', translation: 'vale' },
-        ],
-      },
-      {
-        text: 'El que mucho abarca, poco aprieta',
-        verbs: [
-          { word: 'abarca', infinitive: 'abarcar', tense: 'presente', pronoun: 'el', translation: 'abrange' },
-          { word: 'aprieta', infinitive: 'apretar', tense: 'presente', pronoun: 'el', translation: 'aperta' },
-        ],
-      },
-      {
-        text: 'A quien madruga, Dios le ayuda',
-        verbs: [
-          { word: 'madruga', infinitive: 'madrugar', tense: 'presente', pronoun: 'el', translation: 'madruga' },
-          { word: 'ayuda', infinitive: 'ayudar', tense: 'presente', pronoun: 'el', translation: 'ajuda' },
-        ],
-      },
-    ],
-  },
+  // === DESTAQUE ===
+  { id: 'lyric-01', title: 'Disfruto', artist: 'Carla Morrison', type: 'musica', category: 'cantautor', spotifyId: '50WkRwFR0BAo6If7GtXnA8', context: 'Balada mexicana viral.', translation: 'Desfruto.', lines: [] },
+  // === LATINO ===
+  { id: 'lyric-02', title: 'Vivir Mi Vida', artist: 'Marc Anthony', type: 'musica', category: 'latino', spotifyId: '3QHMxEOAGD51PDlbFPHLyJ', context: 'Hit de salsa sobre viver o momento.', translation: 'Vou rir, vou dançar, viver minha vida.', lines: [] },
+  { id: 'lyric-03', title: 'La Vida Es Un Carnaval', artist: 'Celia Cruz', type: 'musica', category: 'latino', spotifyId: '7rWOuBzhjHdiR7RPz9YH7L', context: 'Clássico latino sobre superar tristezas.', translation: 'A vida é um carnaval.', lines: [] },
+  { id: 'lyric-04', title: 'Me Gustas Tú', artist: 'Manu Chao', type: 'musica', category: 'latino', spotifyId: '6b37xrsNCWYIUphFBazqD6', context: 'Perfeita para praticar "me gusta".', translation: 'Me agradas tu.', lines: [] },
+  { id: 'lyric-05', title: 'Bailando', artist: 'Enrique Iglesias', type: 'musica', category: 'latino', spotifyId: '6PSKhwo0mVcOdjUOhVJd5p', context: 'Hit mundial. Gerúndio e presente.', translation: 'Tu és o imã e eu sou o metal.', lines: [] },
+  { id: 'lyric-06', title: 'Recuérdame (Coco)', artist: 'Carlos Rivera', type: 'musica', category: 'latino', spotifyId: '3f3eX1P1jcRAmnBggOCRo3', context: 'Do filme Coco. Muito emocional.', translation: 'Lembra de mim.', lines: [] },
+  { id: 'lyric-07', title: 'Macarena', artist: 'Los del Río', type: 'musica', category: 'latino', spotifyId: '1qCFAg2xNJWZF0D5JpDkRu', context: 'A dança mais famosa do mundo (1993).', translation: 'Dá alegria ao teu corpo, Macarena.', lines: [] },
+  { id: 'lyric-08', title: 'La Bamba', artist: 'Ritchie Valens', type: 'musica', category: 'latino', spotifyId: '2aEeghgUcnu75tzcolFMfs', context: 'Primeiro rock em espanhol (1958).', translation: 'Para dançar a bamba.', lines: [] },
+  { id: 'lyric-09', title: 'Guantanamera', artist: 'Celia Cruz', type: 'musica', category: 'latino', spotifyId: '4yQp99N7Rk5FFwL7JdpiS3', context: 'Canção patriótica cubana.', translation: 'Mulher de Guantánamo.', lines: [] },
+  { id: 'lyric-10', title: 'Historia de un Amor', artist: 'Luis Miguel', type: 'musica', category: 'latino', spotifyId: '6av3uLAacGG7c9fjshWmuH', context: 'Bolero de 1955. Belíssimo.', translation: 'História de um amor.', lines: [] },
+  { id: 'lyric-11', title: 'Bésame Mucho', artist: 'Andrea Bocelli', type: 'musica', category: 'latino', spotifyId: '5WHnE8MsLFHqSUwecrs7WO', context: 'Bolero de 1940. Mais gravado em espanhol.', translation: 'Beija-me muito.', lines: [] },
+  { id: 'lyric-12', title: 'Viviendo la Vida Loca', artist: 'Ricky Martin', type: 'musica', category: 'latino', spotifyId: '4Yq7WIbdjwx4H7JR6Bf3nZ', context: 'Versão espanhola do hit de 1999.', translation: 'Vivendo a vida louca.', lines: [] },
+  // === MOVIDA 80s ===
+  { id: 'lyric-13', title: 'Devuélveme a Mi Chica', artist: 'Hombres G', type: 'musica', category: 'movida80', spotifyId: '1Wrzhfa5bNlqvsnCztz190', context: 'Hino dos anos 80 espanhóis.', translation: 'Devolve-me a minha garota.', lines: [] },
+  { id: 'lyric-14', title: 'Hijo de la Luna', artist: 'Mecano', type: 'musica', category: 'movida80', spotifyId: '7g3g2sqevicvurLTZ75JTA', context: 'Uma das mais bonitas em espanhol.', translation: 'Filho da lua.', lines: [] },
+  { id: 'lyric-15', title: 'Mujer Contra Mujer', artist: 'Mecano', type: 'musica', category: 'movida80', spotifyId: '3JdRjSY0KcTbFD6fHIu0Qc', context: 'Canção pioneira sobre amor LGBT+.', translation: 'Mulher contra mulher.', lines: [] },
+  { id: 'lyric-16', title: 'Cruz de Navajas', artist: 'Mecano', type: 'musica', category: 'movida80', spotifyId: '5laT2a6iEq4IxgEDV9dSCr', context: 'História dramática. Narrativa cinematográfica.', translation: 'Cruz de navalhas.', lines: [] },
+  { id: 'lyric-17', title: 'Chica de Ayer', artist: 'Nacha Pop', type: 'musica', category: 'movida80', spotifyId: '4chpfrjIqrOPshlDU4ZrKe', context: 'Clássico da Movida Madrileña.', translation: 'Garota de ontem.', lines: [] },
+  { id: 'lyric-18', title: 'Escuela de Calor', artist: 'Radio Futura', type: 'musica', category: 'movida80', spotifyId: '7J0niAY0FLzGiCVJUREl88', context: 'New wave espanhol.', translation: 'Escola de calor.', lines: [] },
+  { id: 'lyric-19', title: 'A Quién le Importa', artist: 'Alaska y Dinarama', type: 'musica', category: 'movida80', spotifyId: '7Eb5AYiiGWItBNddlmxvnh', context: 'Hino LGBT+ e de liberdade.', translation: 'A quem importa?', lines: [] },
+  { id: 'lyric-20', title: '20 de Abril', artist: 'Celtas Cortos', type: 'musica', category: 'movida80', spotifyId: '4bavcis6bApsKI8YkKg3Cx', context: 'Folk rock nostálgico.', translation: '20 de abril.', lines: [] },
+  { id: 'lyric-21', title: 'Lobo Hombre en París', artist: 'La Unión', type: 'musica', category: 'movida80', spotifyId: '2zusjwljepN2HlSFUcAxSY', context: 'Synth-pop misterioso.', translation: 'Homem lobo em Paris.', lines: [] },
+  { id: 'lyric-22', title: 'Cien Gaviotas', artist: 'Duncan Dhu', type: 'musica', category: 'movida80', spotifyId: '5i07tC6hV5AtYTr0tsP0Uy', context: 'Pop rock basco romântico.', translation: 'Cem gaivotas.', lines: [] },
+  { id: 'lyric-23', title: 'Veneno en la Piel', artist: 'Radio Futura', type: 'musica', category: 'movida80', spotifyId: '4oCGALJSQZxLnsnPPgShln', context: 'Rock com influências árabes.', translation: 'Veneno na pele.', lines: [] },
+  // === ROCK ===
+  { id: 'lyric-24', title: 'Entre Dos Tierras', artist: 'Héroes del Silencio', type: 'musica', category: 'rock', spotifyId: '7BYqVvoXpQFhs4jJ0qqNZt', context: 'Rock épico. Uma das melhores em espanhol.', translation: 'Entre duas terras.', lines: [] },
+  { id: 'lyric-25', title: 'Insurrección', artist: 'El Último de la Fila', type: 'musica', category: 'rock', spotifyId: '7803rmspVDTFR78bj5KLPk', context: 'Rock poético de Manolo García.', translation: 'Insurreição.', lines: [] },
+  { id: 'lyric-26', title: 'La Flaca', artist: 'Jarabe de Palo', type: 'musica', category: 'rock', spotifyId: '2LsbizbOeNa4x6qsi2jAMb', context: 'Hit de Pau Donés. Rock latino.', translation: 'A magra.', lines: [] },
+  { id: 'lyric-27', title: 'Oye Cómo Va', artist: 'Santana', type: 'musica', category: 'rock', spotifyId: '5u6y4u5EgDv0peILf60H5t', context: 'Rock latino clássico.', translation: 'Escuta como vai.', lines: [] },
+  { id: 'lyric-28', title: 'Rayando el Sol', artist: 'Maná', type: 'musica', category: 'rock', spotifyId: '4Ofg5uuH7qqDIXpAJMpXZV', context: 'Rock mexicano clássico (1990).', translation: 'Arranhando o sol.', lines: [] },
+  { id: 'lyric-29', title: 'La Camisa Negra', artist: 'Juanes', type: 'musica', category: 'rock', spotifyId: '2ZmCYW6bxYtvkthFexIFXL', context: 'Hit mundial de 2005. Rock colombiano.', translation: 'A camisa preta.', lines: [] },
+  { id: 'lyric-30', title: 'A Dios le Pido', artist: 'Juanes', type: 'musica', category: 'rock', spotifyId: '5dQVYFtcLA4pvTRiTFRFkC', context: 'Um dos maiores hits latinos (2002).', translation: 'A Deus eu peço.', lines: [] },
+  // === FLAMENCO ===
+  { id: 'lyric-31', title: 'Bamboléo', artist: 'Gipsy Kings', type: 'musica', category: 'flamenco', spotifyId: '5siwoDxCGDYnmfWV5SlUpE', context: 'Rumba flamenca de 1987.', translation: 'Bamboléo.', lines: [] },
+  { id: 'lyric-32', title: 'Malamente', artist: 'Rosalía', type: 'musica', category: 'flamenco', spotifyId: '1B0BQaSRHxhI0AUlItY3LK', context: 'Flamenco experimental. Revolucionário.', translation: 'Malamente.', lines: [] },
+  // === CANTAUTORES ===
+  { id: 'lyric-33', title: 'Corazón Partío', artist: 'Alejandro Sanz', type: 'musica', category: 'cantautor', spotifyId: '1cRUTnlBPCwg7zDKvf8l3n', context: 'Um dos maiores hits em espanhol.', translation: 'Coração partido.', lines: [] },
+  { id: 'lyric-34', title: 'Mi Gran Noche', artist: 'Raphael', type: 'musica', category: 'cantautor', spotifyId: '1ZEufZijiwe9Ds5SoZJmA8', context: 'Clássico do pop espanhol.', translation: 'Minha grande noite.', lines: [] },
+  { id: 'lyric-35', title: 'Vivir Así es Morir de Amor', artist: 'Camilo Sesto', type: 'musica', category: 'cantautor', spotifyId: '3yzHIAzk3zVE1WgspS8W21', context: 'Balada dramática dos anos 70.', translation: 'Viver assim é morrer de amor.', lines: [] },
+  { id: 'lyric-36', title: 'Princesa', artist: 'Joaquín Sabina', type: 'musica', category: 'cantautor', spotifyId: '1bBvbydRlWKs51dA5GwTwh', context: 'Balada poética e irônica.', translation: 'Princesa.', lines: [] },
+  { id: 'lyric-37', title: 'Y Nos Dieron las Diez', artist: 'Joaquín Sabina', type: 'musica', category: 'cantautor', spotifyId: '1eCie6lwjb4crxeAvkRaSi', context: 'Noite que não termina.', translation: 'E nos deram as dez.', lines: [] },
+  { id: 'lyric-38', title: 'Eres Tú', artist: 'Mocedades', type: 'musica', category: 'cantautor', spotifyId: '5MWUstMMH2rcxqTSkEeTtP', context: 'Clássico dos anos 70. Eurovision.', translation: 'É você.', lines: [] },
+  // === POP 2000s ===
+  { id: 'lyric-39', title: 'Ave María', artist: 'David Bisbal', type: 'musica', category: 'pop2000', spotifyId: '5U4pDBaeq2Jl2dKuWWUSsh', context: 'Pop latino romântico.', translation: 'Ave Maria.', lines: [] },
+  { id: 'lyric-40', title: 'Bulería', artist: 'David Bisbal', type: 'musica', category: 'pop2000', spotifyId: '2s7WJ9IRON5zalNbfFY1xa', context: 'Pop com flamenco.', translation: 'Bulería.', lines: [] },
+  { id: 'lyric-41', title: 'Solamente Tú', artist: 'Pablo Alborán', type: 'musica', category: 'pop2000', spotifyId: '4f0jYdCQUUR7tEWj1vETuL', context: 'Balada que lançou Pablo Alborán.', translation: 'Somente você.', lines: [] },
+  { id: 'lyric-42', title: 'Desátame', artist: 'Mónica Naranjo', type: 'musica', category: 'pop2000', spotifyId: '2a7Ufmq13NRMavrBYUN5Ex', context: 'Voz potente. Pop dramático.', translation: 'Desamarra-me.', lines: [] },
+  { id: 'lyric-43', title: 'Sobreviviré', artist: 'Mónica Naranjo', type: 'musica', category: 'pop2000', spotifyId: '3xGon93gcCARQ4VgYgoirk', context: 'Hino de superação.', translation: 'Sobreviverei.', lines: [] },
+  { id: 'lyric-44', title: 'Me Rehúso', artist: 'Danny Ocean', type: 'musica', category: 'pop2000', spotifyId: '2UfJHyJcwMhC6DXheWOfMd', context: 'Hit viral de 2017. Pop venezuelano.', translation: 'Me recuso.', lines: [] },
+  // === HITS MUNDIAIS (Reggaeton/Urbano) ===
+  { id: 'lyric-45', title: 'Despacito', artist: 'Luis Fonsi ft. Daddy Yankee', type: 'musica', category: 'latino', spotifyId: '6habFhsOp2NvshLv26DqMb', context: 'A música mais ouvida de todos os tempos.', translation: 'Devagarzinho.', lines: [] },
+  { id: 'lyric-46', title: 'Gasolina', artist: 'Daddy Yankee', type: 'musica', category: 'latino', spotifyId: '228BxWXUYQPJrJYHDLOHkj', context: 'O hit que popularizou o reggaeton (2004).', translation: 'Gasolina.', lines: [] },
+  { id: 'lyric-47', title: 'Danza Kuduro', artist: 'Don Omar ft. Lucenzo', type: 'musica', category: 'latino', spotifyId: '2a1o6ZejUi8U3wzzOtCOYw', context: 'Hit de 2010. Bilíngue espanhol/português.', translation: 'Dança Kuduro.', lines: [] },
+  { id: 'lyric-48', title: 'La Tortura', artist: 'Shakira ft. Alejandro Sanz', type: 'musica', category: 'latino', spotifyId: '53AafWSzYsiJKnAtJTUB5f', context: 'Dueto icônico de 2005. Grammy Latino.', translation: 'A tortura.', lines: [] },
+  { id: 'lyric-49', title: 'Será Será (Hips Don\'t Lie)', artist: 'Shakira ft. Wyclef Jean', type: 'musica', category: 'latino', spotifyId: '6mz40EkyjCOrW7SoRA6oCJ', context: 'Versão espanhola do hit de 2006.', translation: 'Será, será.', lines: [] },
+  { id: 'lyric-50', title: 'Waka Waka (Esto es África)', artist: 'Shakira', type: 'musica', category: 'latino', spotifyId: '4DRFIoachXrW8YV7Yje0yz', context: 'Versão espanhola. Hino da Copa 2010.', translation: 'Isto é África.', lines: [] },
+  { id: 'lyric-51', title: 'Chantaje', artist: 'Shakira ft. Maluma', type: 'musica', category: 'latino', spotifyId: '6mICuAdrwEjh6Y6lroV2Kg', context: 'Hit de 2016. Reggaeton romântico.', translation: 'Chantagem.', lines: [] },
+  { id: 'lyric-52', title: 'Mi Gente', artist: 'J Balvin ft. Willy William', type: 'musica', category: 'latino', spotifyId: '7COfe3P7KgfwDwIRB8LIDw', context: 'Hit viral de 2017. Remix com Beyoncé.', translation: 'Minha gente.', lines: [] },
+  { id: 'lyric-53', title: 'Taki Taki', artist: 'DJ Snake ft. Selena Gomez, Ozuna, Cardi B', type: 'musica', category: 'latino', spotifyId: '0KoiMHhqKLoL4xM54rcWYY', context: 'Mega colaboração de 2018.', translation: 'Taki Taki.', lines: [] },
+  { id: 'lyric-54', title: 'Envolver', artist: 'Anitta', type: 'musica', category: 'latino', spotifyId: '3IAfUEeaXRX9s9UdKOJrFI', context: 'Hit brasileiro que conquistou o mundo (2021).', translation: 'Envolver.', lines: [] },
+  { id: 'lyric-55', title: 'Ojos Así', artist: 'Shakira', type: 'musica', category: 'latino', spotifyId: '4EDfdYJ7mqXRoWAqzF1PVO', context: 'Pop com influência árabe (1998). Clássico.', translation: 'Olhos assim.', lines: [] },
+  { id: 'lyric-56', title: 'BZRP Music Sessions #53', artist: 'Shakira & Bizarrap', type: 'musica', category: 'latino', spotifyId: '4nrPB8O7Y7wsOCJdgXkthe', context: 'Fenômeno viral (2023). Dis track épico.', translation: 'Sessão musical BZRP #53.', lines: [] },
+  { id: 'lyric-57', title: 'Tusa', artist: 'Karol G ft. Nicki Minaj', type: 'musica', category: 'latino', spotifyId: '0dKg2vGC1hFqcK5LGTaKzX', context: 'Hit de 2019. Reggaeton sobre desamor.', translation: 'Ressaca emocional.', lines: [] },
+  { id: 'lyric-58', title: 'Felices los 4', artist: 'Maluma', type: 'musica', category: 'latino', spotifyId: '1RouRzlg8OKFeqc6LvdxmB', context: 'Hit reggaeton de 2017.', translation: 'Felizes os 4.', lines: [] },
+  { id: 'lyric-59', title: 'Hawái', artist: 'Maluma', type: 'musica', category: 'latino', spotifyId: '1yoMvmasuxZfqHEipJhRbp', context: 'Hit de 2020. Pop urbano tropical.', translation: 'Havaí.', lines: [] },
+  { id: 'lyric-60', title: 'Propuesta Indecente', artist: 'Romeo Santos', type: 'musica', category: 'latino', spotifyId: '5PycBIeabfvX3n9ILG7Vrv', context: 'Bachata sensual. Mais de 1 bilhão de plays.', translation: 'Proposta indecente.', lines: [] },
+  { id: 'lyric-61', title: 'Pepas', artist: 'Farruko', type: 'musica', category: 'latino', spotifyId: '2B4GHvToeLTOBB4QLzW3Ni', context: 'Hit EDM/reggaeton de 2021. Viral global.', translation: 'Baladas.', lines: [] },
+  { id: 'lyric-62', title: 'Todo de Ti', artist: 'Rauw Alejandro', type: 'musica', category: 'latino', spotifyId: '3rdAz1fbUfZxYgaCviYhRo', context: 'Hit synth-pop latino (2021). Nostálgico.', translation: 'Tudo de você.', lines: [] },
+  { id: 'lyric-63', title: 'Ella Baila Sola', artist: 'Eslabon Armado ft. Peso Pluma', type: 'musica', category: 'latino', spotifyId: '3qQbCzHBycnDpGskqOWY0E', context: 'Música mexicana viral (2023). Sierreño.', translation: 'Ela dança sozinha.', lines: [] },
 ];
