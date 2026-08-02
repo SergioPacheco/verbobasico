@@ -132,7 +132,7 @@ export function HomePage() {
           })}
         </div>
 
-        {/* Extra sections */}
+        {/* Modos de Treino */}
         <h2
           className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1 animate-slide-up"
           style={{ animationDelay: '0.25s' }}
@@ -187,16 +187,24 @@ export function HomePage() {
           </button>
 
           <button
-            onClick={() => navigate('/idioms')}
-            className="card text-left p-4 hover:border-spain-red/30 border-2 border-yellow-100"
+            onClick={() => navigate('/conversation')}
+            className="card text-left p-4 hover:border-spain-red/30 border-2 border-teal-100"
           >
             <span className="text-2xl block mb-2">🗣️</span>
-            <p className="font-semibold text-gray-900 text-sm">Expressões</p>
-            <p className="text-xs text-gray-500">Idiomáticas + Quiz</p>
+            <p className="font-semibold text-gray-900 text-sm">Conversação</p>
+            <p className="text-xs text-gray-500">Frases úteis por tema</p>
           </button>
         </div>
 
-        <div className="space-y-3 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+        {/* Aprender */}
+        <h2
+          className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1 animate-slide-up"
+          style={{ animationDelay: '0.3s' }}
+        >
+          📚 Aprender
+        </h2>
+
+        <div className="space-y-3 mb-6 animate-slide-up" style={{ animationDelay: '0.32s' }}>
           <button
             onClick={() => navigate('/conjugation')}
             className="card w-full text-left p-4 flex items-center gap-3 border-2 border-blue-200 hover:border-blue-300"
@@ -211,6 +219,19 @@ export function HomePage() {
           </button>
 
           <button
+            onClick={() => navigate('/grammar')}
+            className="card w-full text-left p-4 flex items-center gap-3 border-2 border-indigo-200 hover:border-indigo-300"
+          >
+            <span className="text-2xl">📚</span>
+            <div>
+              <p className="font-semibold text-gray-900">Gramática</p>
+              <p className="text-xs text-gray-500">
+                Regras essenciais: ser/estar, muy/mucho, subjuntivo...
+              </p>
+            </div>
+          </button>
+
+          <button
             onClick={() => navigate('/gotchas')}
             className="card w-full text-left p-4 flex items-center gap-3 border-2 border-yellow-200 hover:border-yellow-300"
           >
@@ -218,30 +239,66 @@ export function HomePage() {
             <div>
               <p className="font-semibold text-gray-900">Pegadinhas para brasileiros</p>
               <p className="text-xs text-gray-500">
-                tener vs ter, ser vs estar, pedir vs preguntar...
+                Falsos cognatos, expressões e armadilhas
               </p>
             </div>
           </button>
 
+          <button
+            onClick={() => navigate('/pronunciation')}
+            className="card w-full text-left p-4 flex items-center gap-3 border-2 border-pink-200 hover:border-pink-300"
+          >
+            <span className="text-2xl">🗣️</span>
+            <div>
+              <p className="font-semibold text-gray-900">Pronúncia</p>
+              <p className="text-xs text-gray-500">
+                Guia de sons difíceis para brasileiros
+              </p>
+            </div>
+          </button>
+
+          <button
+            onClick={() => navigate('/reading')}
+            className="card w-full text-left p-4 flex items-center gap-3 border-2 border-emerald-200 hover:border-emerald-300"
+          >
+            <span className="text-2xl">📄</span>
+            <div>
+              <p className="font-semibold text-gray-900">Leitura</p>
+              <p className="text-xs text-gray-500">
+                Textos com tradução e vocabulário
+              </p>
+            </div>
+          </button>
+        </div>
+
+        {/* Extras */}
+        <h2
+          className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 px-1 animate-slide-up"
+          style={{ animationDelay: '0.35s' }}
+        >
+          🎵 Extras
+        </h2>
+
+        <div className="space-y-3 animate-slide-up" style={{ animationDelay: '0.37s' }}>
           <button
             onClick={() => navigate('/lyrics')}
             className="card w-full text-left p-4 flex items-center gap-3 border-2 border-purple-200 hover:border-purple-300"
           >
             <span className="text-2xl">🎵</span>
             <div>
-              <p className="font-semibold text-gray-900">Verbos na Música</p>
-              <p className="text-xs text-gray-500">Letras e poesias com verbos destacados</p>
+              <p className="font-semibold text-gray-900">Música</p>
+              <p className="text-xs text-gray-500">Letras de músicas espanholas com Spotify</p>
             </div>
           </button>
 
           <button
-            onClick={() => navigate('/vocabulary')}
-            className="card w-full text-left p-4 flex items-center gap-3 border-2 border-green-200 hover:border-green-300"
+            onClick={() => navigate('/refranes')}
+            className="card w-full text-left p-4 flex items-center gap-3 border-2 border-amber-200 hover:border-amber-300"
           >
-            <span className="text-2xl">📚</span>
+            <span className="text-2xl">💬</span>
             <div>
-              <p className="font-semibold text-gray-900">Vocabulário</p>
-              <p className="text-xs text-gray-500">Falsos cognatos + expressões andaluzas</p>
+              <p className="font-semibold text-gray-900">Refranes</p>
+              <p className="text-xs text-gray-500">Provérbios e ditos populares espanhóis</p>
             </div>
           </button>
         </div>

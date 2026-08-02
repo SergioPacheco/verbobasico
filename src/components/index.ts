@@ -1,5 +1,6 @@
 // Core components
 export { Header } from './Header';
+export { Footer } from './Footer';
 export { ErrorBoundary, useErrorBoundary } from './ErrorBoundary';
 
 // UI components

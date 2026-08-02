@@ -1,7 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ProgressProvider } from './context';
-import { ErrorBoundary, Spinner } from './components';
+import { ErrorBoundary, Footer, Spinner } from './components';
 
 // Lazy load all pages for code splitting
 const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
@@ -62,39 +62,44 @@ export default function App() {
     <ErrorBoundary>
       <ProgressProvider>
         <BrowserRouter>
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              {/* Main routes */}
-              <Route path="/" element={<Navigate to="/conjugation" replace />} />
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/conjugation" element={<FullPage />} />
-              <Route path="/training" element={<TrainingPage />} />
-              <Route path="/mistakes" element={<MistakesPage />} />
+          <div className="min-h-screen flex flex-col">
+            <Suspense fallback={<PageLoader />}>
+              <div className="flex-1">
+                <Routes>
+                  {/* Main routes */}
+                  <Route path="/" element={<Navigate to="/conjugation" replace />} />
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/conjugation" element={<FullPage />} />
+                  <Route path="/training" element={<TrainingPage />} />
+                  <Route path="/mistakes" element={<MistakesPage />} />
 
-              {/* Practice modes */}
-              <Route path="/listening" element={<ListeningPage />} />
-              <Route path="/speed" element={<SpeedDrillPage />} />
-              <Route path="/dialogue" element={<DialoguePage />} />
-              <Route path="/cloze" element={<ClozePage />} />
-              <Route path="/transform" element={<TransformPage />} />
-              <Route path="/conversation" element={<ConversationPage />} />
+                  {/* Practice modes */}
+                  <Route path="/listening" element={<ListeningPage />} />
+                  <Route path="/speed" element={<SpeedDrillPage />} />
+                  <Route path="/dialogue" element={<DialoguePage />} />
+                  <Route path="/cloze" element={<ClozePage />} />
+                  <Route path="/transform" element={<TransformPage />} />
+                  <Route path="/conversation" element={<ConversationPage />} />
 
-              {/* Reference pages */}
-              <Route path="/gotchas" element={<GotchasPage />} />
-              <Route path="/lyrics" element={<LyricsPage />} />
-              <Route path="/grammar" element={<GrammarPage />} />
-              <Route path="/pronunciation" element={<PronunciationPage />} />
-              <Route path="/reading" element={<ReadingPage />} />
-              <Route path="/refranes" element={<RefranesPage />} />
+                  {/* Reference pages */}
+                  <Route path="/gotchas" element={<GotchasPage />} />
+                  <Route path="/lyrics" element={<LyricsPage />} />
+                  <Route path="/grammar" element={<GrammarPage />} />
+                  <Route path="/pronunciation" element={<PronunciationPage />} />
+                  <Route path="/reading" element={<ReadingPage />} />
+                  <Route path="/refranes" element={<RefranesPage />} />
 
-              {/* Redirects for removed pages */}
-              <Route path="/vocabulary" element={<Navigate to="/gotchas" replace />} />
-              <Route path="/idioms" element={<Navigate to="/gotchas" replace />} />
+                  {/* Redirects for removed pages */}
+                  <Route path="/vocabulary" element={<Navigate to="/gotchas" replace />} />
+                  <Route path="/idioms" element={<Navigate to="/gotchas" replace />} />
 
-              {/* Fallback for unknown routes */}
-              <Route path="*" element={<Navigate to="/conjugation" replace />} />
-            </Routes>
-          </Suspense>
+                  {/* Fallback for unknown routes */}
+                  <Route path="*" element={<Navigate to="/conjugation" replace />} />
+                </Routes>
+              </div>
+              <Footer />
+            </Suspense>
+          </div>
         </BrowserRouter>
       </ProgressProvider>
     </ErrorBoundary>

@@ -3,6 +3,34 @@ import { grammarTopics } from '../data/grammarTopics';
 import type { GrammarTopic, GrammarRule } from '../data/grammarTopics';
 import { Header } from '../components';
 
+// Organização por categoria
+const categories = [
+  {
+    id: 'essential',
+    title: '⭐ Essencial',
+    description: 'Comece por aqui',
+    topicIds: ['ser-estar', 'muy-mucho', 'reflexivos', 'genero'],
+  },
+  {
+    id: 'structure',
+    title: '🏗️ Estrutura',
+    description: 'Base da língua',
+    topicIds: ['articulos', 'pronombres', 'preposiciones'],
+  },
+  {
+    id: 'verbs',
+    title: '🔄 Verbos',
+    description: 'Tempos e construções',
+    topicIds: ['tiempos', 'subjuntivo', 'perifrasis'],
+  },
+  {
+    id: 'advanced',
+    title: '📈 Avançado',
+    description: 'Polimento',
+    topicIds: ['heterotonicos', 'acentuacion', 'conectores'],
+  },
+];
+
 function RuleCard({ rule, speak, speechSupported }: { rule: GrammarRule; speak: (text: string) => void; speechSupported: boolean }) {
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-4 mb-3">
@@ -34,19 +62,19 @@ function TopicSection({ topic, speak, speechSupported }: { topic: GrammarTopic; 
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="mb-4">
+    <div className="mb-3">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full bg-gradient-to-r from-spain-red to-red-600 text-white px-4 py-3 rounded-xl flex items-center justify-between hover:from-red-700 hover:to-red-700 transition-colors"
+        className="w-full bg-white border border-gray-200 hover:border-spain-red/50 px-4 py-3 rounded-xl flex items-center justify-between transition-colors shadow-sm"
       >
         <div className="flex items-center gap-3">
           <span className="text-2xl">{topic.emoji}</span>
           <div className="text-left">
-            <h3 className="font-bold text-lg">{topic.title}</h3>
-            <p className="text-sm opacity-90">{topic.description}</p>
+            <h3 className="font-bold text-gray-900">{topic.title}</h3>
+            <p className="text-sm text-gray-500">{topic.description}</p>
           </div>
         </div>
-        <span className="text-xl transition-transform duration-200" style={{ transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+        <span className="text-gray-400 transition-transform duration-200" style={{ transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)' }}>
           ▼
         </span>
       </button>
@@ -64,6 +92,7 @@ function TopicSection({ topic, speak, speechSupported }: { topic: GrammarTopic; 
 
 export function GrammarPage() {
   const [speechSupported] = useState(() => 'speechSynthesis' in window);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   
   const speak = (text: string) => {
     if (!speechSupported) return;
@@ -73,10 +102,15 @@ export function GrammarPage() {
     speechSynthesis.speak(utterance);
   };
 
+  // Filtra tópicos por categoria ou mostra todos
+  const getTopicsForCategory = (topicIds: string[]) => {
+    return topicIds.map(id => grammarTopics.find(t => t.id === id)).filter(Boolean) as GrammarTopic[];
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
       <Header
-        title="📚 Gramática Básica"
+        title="📚 Gramática"
         subtitle={`${grammarTopics.length} tópicos essenciais`}
       />
 
@@ -84,25 +118,73 @@ export function GrammarPage() {
         {/* Intro */}
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
           <p className="text-sm text-blue-800">
-            <span className="font-bold">💡 Dica:</span> Clique em cada tópico para expandir as regras e exemplos. 
-            Use o botão 🔊 para ouvir a pronúncia em espanhol.
+            <span className="font-bold">💡 Dica:</span> Comece pelos tópicos <strong>Essenciais</strong> — são as diferenças mais importantes entre português e espanhol.
           </p>
         </div>
 
-        {/* Topics */}
-        {grammarTopics.map((topic) => (
-          <TopicSection 
-            key={topic.id} 
-            topic={topic} 
-            speak={speak}
-            speechSupported={speechSupported}
-          />
-        ))}
+        {/* Category tabs */}
+        <div className="flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-hide">
+          <button
+            onClick={() => setActiveCategory(null)}
+            className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              activeCategory === null
+                ? 'bg-spain-red text-white'
+                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+            }`}
+          >
+            Todos
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                activeCategory === cat.id
+                  ? 'bg-spain-red text-white'
+                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+              }`}
+            >
+              {cat.title}
+            </button>
+          ))}
+        </div>
 
-        {/* Footer */}
-        <footer className="text-center py-4 text-gray-500 text-xs">
-          <p>Gramática essencial para brasileiros</p>
-        </footer>
+        {/* Topics by category */}
+        {activeCategory === null ? (
+          // Show all categories
+          categories.map((category) => (
+            <div key={category.id} className="mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <h2 className="text-lg font-bold text-gray-800">{category.title}</h2>
+                <span className="text-sm text-gray-500">— {category.description}</span>
+              </div>
+              {getTopicsForCategory(category.topicIds).map((topic) => (
+                <TopicSection 
+                  key={topic.id} 
+                  topic={topic} 
+                  speak={speak}
+                  speechSupported={speechSupported}
+                />
+              ))}
+            </div>
+          ))
+        ) : (
+          // Show only selected category
+          <>
+            {(() => {
+              const category = categories.find(c => c.id === activeCategory);
+              if (!category) return null;
+              return getTopicsForCategory(category.topicIds).map((topic) => (
+                <TopicSection 
+                  key={topic.id} 
+                  topic={topic} 
+                  speak={speak}
+                  speechSupported={speechSupported}
+                />
+              ));
+            })()}
+          </>
+        )}
       </div>
     </div>
   );
