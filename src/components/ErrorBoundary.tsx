@@ -52,7 +52,7 @@ export class ErrorBoundary extends Component<Props, State> {
               Ocorreu um erro inesperado. Não se preocupe, isso acontece às vezes.
             </p>
 
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <details className="mb-4 text-left">
                 <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
                   Detalhes do erro (desenvolvimento)
