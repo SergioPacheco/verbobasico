@@ -169,7 +169,7 @@ export function Header({ title, subtitle, showBack = true }: HeaderProps) {
           aria-modal="true"
         >
           <nav
-            className="absolute top-14 right-2 left-2 sm:right-4 sm:left-4 max-w-md mx-auto bg-white rounded-xl shadow-2xl overflow-hidden animate-slide-up"
+            className="absolute top-14 right-2 left-2 sm:right-4 sm:left-4 max-w-md mx-auto bg-white rounded-xl shadow-2xl animate-slide-up max-h-[calc(100vh-4rem)] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
             aria-label="Menu de navegação"
           >
