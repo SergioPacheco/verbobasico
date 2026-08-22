@@ -62,7 +62,7 @@ export default function App() {
     <ErrorBoundary>
       <ProgressProvider>
         <BrowserRouter>
-          <div className="min-h-screen flex flex-col">
+          <div className="min-h-[100dvh] flex flex-col overflow-x-hidden">
             <Suspense fallback={<PageLoader />}>
               <div className="flex-1">
                 <Routes>
@@ -71,6 +71,7 @@ export default function App() {
                   <Route path="/home" element={<HomePage />} />
                   <Route path="/conjugation" element={<FullPage />} />
                   <Route path="/training" element={<TrainingPage />} />
+                  <Route path="/training/:situation" element={<TrainingPage />} />
                   <Route path="/mistakes" element={<MistakesPage />} />
 
                   {/* Practice modes */}

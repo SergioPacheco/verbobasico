@@ -26,6 +26,7 @@ export function LyricsPage() {
   const filtered = category === 'all' 
     ? lyrics 
     : lyrics.filter((l) => l.category === category);
+  const featured = filtered.find((entry) => entry.lines.length > 0) || filtered[0];
 
   const categories: Array<{ key: CategoryFilter; emoji: string; name: string }> = [
     { key: 'all', emoji: '📋', name: 'Todas' },
@@ -40,7 +41,64 @@ export function LyricsPage() {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
       <Header title="🎵 Música" subtitle={`${lyrics.length} músicas para aprender`} />
 
-      <div className="max-w-2xl mx-auto px-4 py-4">
+      <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
+        {featured?.lines?.length > 0 && (
+          <div className="card mb-4 border-2 border-spain-red/15 bg-gradient-to-br from-white via-amber-50 to-red-50 animate-fade-in">
+            <div className="flex items-center justify-between gap-3 mb-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-spain-red">Trecho em destaque</p>
+                <h2 className="text-lg font-bold text-gray-900">{featured.title}</h2>
+              </div>
+              <span className="text-xs px-2 py-1 rounded-full bg-spain-red/10 text-spain-red font-medium">
+                Verbos marcados
+              </span>
+            </div>
+
+            <div className="space-y-2">
+              {featured.lines.slice(0, 2).map((line, idx) => (
+                <div key={`${featured.id}-${idx}`} className="rounded-xl bg-white/80 border border-white/70 px-3 py-2">
+                  <p className="text-sm leading-6 text-gray-800">
+                    {line.text.split(/\b/).map((part, partIdx) => {
+                      const verbHit = line.verbs.find(
+                        (verb) => verb.word.toLowerCase() === part.toLowerCase()
+                      );
+                      if (!verbHit) {
+                        return <span key={partIdx}>{part}</span>;
+                      }
+
+                      return (
+                        <span
+                          key={partIdx}
+                          className="inline-flex items-center gap-1 rounded-md bg-spain-red/10 px-1.5 py-0.5 font-semibold text-spain-red"
+                          title={`${verbHit.infinitive} • ${verbHit.translation}`}
+                        >
+                          {part}
+                        </span>
+                      );
+                    })}
+                  </p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {line.verbs.map((verb) => (
+                      <span
+                        key={`${verb.word}-${verb.infinitive}`}
+                        className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-700"
+                      >
+                        <span className="text-spain-red">{verb.word}</span>
+                        <span className="text-gray-400">→</span>
+                        <span>{verb.infinitive}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="mt-3 text-xs text-gray-500">
+              Use esse trecho como referência visual. Os verbos aparecem destacados para facilitar o estudo.
+            </p>
+          </div>
+        )}
+
         {/* Info */}
         <div className="card mb-4 border-2 border-green-200 animate-fade-in">
           <p className="text-gray-600 text-sm">
@@ -117,6 +175,11 @@ export function LyricsPage() {
                       🇧🇷 <span className="font-medium">{entry.translation}</span>
                     </p>
                   </div>
+                  {entry.lines.length > 0 && (
+                    <p className="text-xs text-spain-red font-medium">
+                      ✨ Esta música tem trecho destacado acima com verbos marcados.
+                    </p>
+                  )}
                 </div>
               </div>
             );

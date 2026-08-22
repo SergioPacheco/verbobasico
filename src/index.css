@@ -12,6 +12,7 @@
     padding: 0;
     width: 100%;
     min-height: 100%;
+    overflow-x: hidden;
   }
 
   body {
@@ -19,6 +20,7 @@
     background: linear-gradient(135deg, #FEF3C7 0%, #FFFFFF 50%, #FEE2E2 100%);
     min-height: 100vh;
     min-height: 100dvh; /* Dynamic viewport height for mobile */
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -26,6 +28,7 @@
   #root {
     min-height: 100vh;
     min-height: 100dvh;
+    overflow-x: hidden;
   }
 }
 

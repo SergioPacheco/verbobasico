@@ -9,7 +9,7 @@ interface LayoutProps {
   showBack?: boolean;
   showFooter?: boolean;
   gradient?: 'default' | 'amber' | 'green' | 'blue' | 'purple';
-  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '4xl';
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '4xl' | '5xl' | '6xl' | 'full';
   padding?: 'none' | 'sm' | 'md' | 'lg';
 }
 
@@ -28,6 +28,9 @@ const maxWidthStyles = {
   xl: 'max-w-xl',
   '2xl': 'max-w-2xl',
   '4xl': 'max-w-4xl',
+  '5xl': 'max-w-5xl',
+  '6xl': 'max-w-6xl',
+  full: 'max-w-full',
 };
 
 const paddingStyles = {
@@ -44,11 +47,11 @@ export function Layout({
   showBack = true,
   showFooter = true,
   gradient = 'default',
-  maxWidth = '2xl',
-  padding = 'md',
+  maxWidth = '5xl',
+  padding = 'sm',
 }: LayoutProps) {
   return (
-    <div className={`min-h-screen flex flex-col ${gradientStyles[gradient]}`}>
+    <div className={`min-h-[100dvh] flex flex-col overflow-x-hidden ${gradientStyles[gradient]}`}>
       <Header title={title} subtitle={subtitle} showBack={showBack} />
       <main className={`flex-1 ${maxWidthStyles[maxWidth]} mx-auto w-full ${paddingStyles[padding]}`}>
         {children}

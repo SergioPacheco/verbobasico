@@ -25,18 +25,18 @@ export function HomePage() {
   const hasTrainedToday = progress.lastSessionDate === today;
 
   const handleStartSituation = (situation: Situation) => {
-    navigate(`/training?situation=${situation}`);
+    navigate(`/training/${situation}`);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+    <div className="min-h-[100dvh] overflow-x-hidden bg-gradient-to-br from-amber-50 via-white to-red-50">
       <Header
         title="🇪🇸 Verbo Básico"
         subtitle="Aprenda os verbos que você realmente usa"
         showBack={false}
       />
 
-      <div className="max-w-2xl mx-auto px-4 py-4 pb-24">
+      <div className="mx-auto w-full max-w-6xl px-3 py-4 pb-20 sm:px-4 sm:pb-24">
         {/* Daily streak + Level */}
         <div className="flex items-center justify-between mb-6 animate-slide-up">
           <div className="flex items-center gap-2">

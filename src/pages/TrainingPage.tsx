@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import type { Situation } from '../types';
 import { PRONOUN_LABELS, TENSE_LABELS, SITUATION_LABELS } from '../types';
 import { useTraining, useSpeech, useSoundEffects } from '../hooks';
@@ -10,8 +10,10 @@ import { Header } from '../components';
 
 export function TrainingPage() {
   const navigate = useNavigate();
+  const params = useParams();
   const [searchParams] = useSearchParams();
-  const situation = searchParams.get('situation') as Situation | null;
+  const situationParam = params.situation || searchParams.get('situation');
+  const situation = situationParam as Situation | null;
   const phraseIdsParam = searchParams.get('phraseIds');
   const phraseIds = phraseIdsParam ? phraseIdsParam.split(',') : undefined;
 
@@ -121,7 +123,7 @@ export function TrainingPage() {
   // Handle case when no questions are available
   if (!question && !sessionDone) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+      <div className="min-h-[100dvh] overflow-x-hidden bg-gradient-to-br from-amber-50 via-white to-red-50">
         <Header title="🎯 Treino" />
         <div className="flex items-center justify-center px-4 py-10">
           <div className="card text-center w-full max-w-sm">
@@ -144,7 +146,7 @@ export function TrainingPage() {
   if (sessionDone) {
     const accuracy = sessionTotal > 0 ? Math.round((sessionCorrect / sessionTotal) * 100) : 0;
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+      <div className="min-h-[100dvh] overflow-x-hidden bg-gradient-to-br from-amber-50 via-white to-red-50">
         <Header title="🎯 Treino" />
         <div className="flex items-center justify-center px-4 py-10">
           <div className="card text-center w-full max-w-sm animate-bounce-in">
@@ -182,7 +184,7 @@ export function TrainingPage() {
 
   if (!question || !currentPhrase) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+      <div className="min-h-[100dvh] overflow-x-hidden bg-gradient-to-br from-amber-50 via-white to-red-50">
         <Header title="🎯 Treino" />
         <div className="flex items-center justify-center px-4 py-20">
           <div className="card text-center">
@@ -197,7 +199,7 @@ export function TrainingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
+    <div className="min-h-[100dvh] overflow-x-hidden bg-gradient-to-br from-amber-50 via-white to-red-50">
       <Header
         title={
           situation
@@ -207,7 +209,7 @@ export function TrainingPage() {
         subtitle={`⏱ ${formatTime(elapsedTime)} | 🔥${progress.currentStreak}`}
       />
 
-      <div className="max-w-2xl mx-auto px-4 py-4">
+      <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
         {/* Progress bar */}
         <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-4">
           <div

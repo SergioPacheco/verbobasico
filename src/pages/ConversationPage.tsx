@@ -6,6 +6,29 @@ import { useSpeech } from '../hooks';
 
 type Mode = 'topics' | 'practice';
 
+const TOPIC_GROUPS = [
+  {
+    title: 'Vida cotidiana',
+    description: 'Temas práticos do dia a dia.',
+    ids: ['dinero', 'restaurante', 'documentos', 'alquiler', 'vecindario'],
+  },
+  {
+    title: 'Situações pessoais',
+    description: 'Saúde, bebida e estudos.',
+    ids: ['bebida', 'salud', 'estudios'],
+  },
+  {
+    title: 'Trabalho e rotina',
+    description: 'Ambiente profissional, tecnologia e organização.',
+    ids: ['trabajo-remoto', 'tecnologia'],
+  },
+  {
+    title: 'Mobilidade e experiências',
+    description: 'Viagens e deslocamentos.',
+    ids: ['viajes'],
+  },
+];
+
 function VocabularySection({
   topic,
   speak,
@@ -71,30 +94,61 @@ function TopicSelector({
   topics: ConversationTopic[];
   onSelect: (topic: ConversationTopic) => void;
 }) {
+  const groupedTopics = TOPIC_GROUPS.map((group) => ({
+    ...group,
+    topics: topics.filter((topic) => group.ids.includes(topic.id)),
+  })).filter((group) => group.topics.length > 0);
+
   return (
-    <div className="space-y-3">
-      <p className="text-gray-600 text-sm text-center mb-4">
-        Elige un tema para practicar conversación en español
-      </p>
-      {topics.map((topic, idx) => (
-        <button
-          key={topic.id}
-          onClick={() => onSelect(topic)}
-          className="card w-full p-5 text-left hover:border-spain-red/40 hover:shadow-md transition-all animate-slide-up"
-          style={{ animationDelay: `${idx * 100}ms` }}
-        >
-          <div className="flex items-center gap-4">
-            <span className="text-4xl">{topic.emoji}</span>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold text-gray-900">{topic.name}</h3>
-              <p className="text-sm text-gray-500">
-                {topic.vocabulary.length} palabras · {topic.questions.length} preguntas
-              </p>
+    <div className="space-y-6">
+      <div className="rounded-2xl border border-spain-red/15 bg-white/80 p-4 shadow-sm">
+        <p className="text-center text-sm text-gray-700">
+          Elige un tema para practicar conversación en español
+        </p>
+        <p className="mt-1 text-center text-xs text-gray-500">
+          Os temas estão agrupados para você achar o assunto certo mais rápido.
+        </p>
+      </div>
+
+      <div className="space-y-6">
+        {groupedTopics.map((group) => (
+          <section key={group.title} className="space-y-3">
+            <div className="flex items-end justify-between gap-3">
+              <div>
+                <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
+                  {group.title}
+                </h3>
+                <p className="text-xs text-gray-500">{group.description}</p>
+              </div>
+              <span className="rounded-full bg-gray-100 px-2.5 py-1 text-[11px] font-medium text-gray-600">
+                {group.topics.length} temas
+              </span>
             </div>
-            <span className="text-spain-red text-xl">→</span>
-          </div>
-        </button>
-      ))}
+
+            <div className="space-y-3">
+              {group.topics.map((topic, idx) => (
+                <button
+                  key={topic.id}
+                  onClick={() => onSelect(topic)}
+                  className="card w-full p-5 text-left hover:border-spain-red/40 hover:shadow-md transition-all animate-slide-up"
+                  style={{ animationDelay: `${idx * 70}ms` }}
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="text-4xl">{topic.emoji}</span>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-lg font-bold text-gray-900">{topic.name}</h3>
+                      <p className="text-sm text-gray-500">
+                        {topic.vocabulary.length} palavras · {topic.questions.length} perguntas
+                      </p>
+                    </div>
+                    <span className="text-spain-red text-xl">→</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
     </div>
   );
 }
@@ -124,7 +178,7 @@ export function ConversationPage() {
           subtitle={`${selectedTopic.questions.length} preguntas para practicar`}
         />
 
-        <div className="max-w-2xl mx-auto px-4 py-4">
+        <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
           <VocabularySection
             topic={selectedTopic}
             speak={speak}
@@ -174,7 +228,7 @@ export function ConversationPage() {
         subtitle={`${conversationTopics.length} temas disponibles`}
       />
 
-      <div className="max-w-2xl mx-auto px-4 py-4">
+      <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
         <TopicSelector topics={conversationTopics} onSelect={handleSelectTopic} />
 
         <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-100">

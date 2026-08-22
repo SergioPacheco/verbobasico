@@ -261,7 +261,7 @@ export function FullPage() {
   const [allExpanded, setAllExpanded] = useState(true);
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-amber-50 via-white to-red-50">
+    <div className="min-h-[100dvh] w-full overflow-x-hidden bg-gradient-to-br from-amber-50 via-white to-red-50">
       <Header
         title="🇪🇸 Verbo Básico"
         subtitle={`${verbs.length} verbos • 7 tempos`}

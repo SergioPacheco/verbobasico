@@ -85,7 +85,7 @@ export function RefranesPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
         <Header title="💬 Quiz de Refranes" subtitle={`${quizIdx + 1}/${quizQueue.length}`} />
-        <div className="max-w-2xl mx-auto px-4 py-4">
+        <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
           <div className="h-2 bg-gray-100 rounded-full mb-6">
             <div
               className="h-full bg-spain-red rounded-full transition-all"
@@ -156,7 +156,7 @@ export function RefranesPage() {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
       <Header title="💬 Refranes Españoles" subtitle={`${refranes.length} provérbios populares`} />
 
-      <div className="max-w-2xl mx-auto px-4 py-4">
+      <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
         {/* Info card */}
         <div className="card mb-4 border-2 border-amber-200 animate-fade-in">
           <p className="text-gray-600 text-sm">

@@ -2,7 +2,30 @@ import type { LyricEntry } from '../types';
 
 export const lyrics: LyricEntry[] = [
   // === DESTAQUE ===
-  { id: 'lyric-01', title: 'Disfruto', artist: 'Carla Morrison', type: 'musica', category: 'cantautor', spotifyId: '50WkRwFR0BAo6If7GtXnA8', context: 'Balada mexicana viral.', translation: 'Desfruto.', lines: [] },
+  {
+    id: 'lyric-01',
+    title: 'Disfruto',
+    artist: 'Carla Morrison',
+    type: 'musica',
+    category: 'cantautor',
+    spotifyId: '50WkRwFR0BAo6If7GtXnA8',
+    context: 'Balada mexicana viral.',
+    translation: 'Desfruto.',
+    lines: [
+      {
+        text: 'Disfruto cada instante',
+        verbs: [
+          { word: 'Disfruto', infinitive: 'disfrutar', tense: 'presente', pronoun: 'yo', translation: 'eu desfruto' },
+        ],
+      },
+      {
+        text: 'y quiero quedarme',
+        verbs: [
+          { word: 'quiero', infinitive: 'querer', tense: 'presente', pronoun: 'yo', translation: 'eu quero' },
+        ],
+      },
+    ],
+  },
   // === LATINO ===
   { id: 'lyric-02', title: 'Vivir Mi Vida', artist: 'Marc Anthony', type: 'musica', category: 'latino', spotifyId: '3QHMxEOAGD51PDlbFPHLyJ', context: 'Hit de salsa sobre viver o momento.', translation: 'Vou rir, vou dançar, viver minha vida.', lines: [] },
   { id: 'lyric-03', title: 'La Vida Es Un Carnaval', artist: 'Celia Cruz', type: 'musica', category: 'latino', spotifyId: '7rWOuBzhjHdiR7RPz9YH7L', context: 'Clássico latino sobre superar tristezas.', translation: 'A vida é um carnaval.', lines: [] },

@@ -100,7 +100,7 @@ export function DialoguePage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
         <Header title="💬 Diálogos" subtitle="Escolha uma situação" />
-        <div className="max-w-2xl mx-auto px-4 py-4">
+        <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
           <div className="grid grid-cols-2 gap-3">
             {SITUATIONS.map((sit) => {
               const info = SITUATION_LABELS[sit];
@@ -153,7 +153,7 @@ export function DialoguePage() {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50 flex flex-col">
       <Header title={dialogue.title} subtitle={`${score}/${total}`} />
 
-      <div className="flex-1 max-w-2xl mx-auto px-4 py-4 flex flex-col w-full">
+      <div className="flex-1 mx-auto w-full max-w-4xl px-3 py-4 sm:px-4 flex flex-col">
         <div className="flex-1 space-y-3 mb-4 overflow-y-auto">
           {dialogue.turns.map((turn, i) => {
             const isRevealed = revealedTurns.includes(i);

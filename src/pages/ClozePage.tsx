@@ -171,7 +171,7 @@ export function ClozePage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
         <Header title="📝 Cloze Test" subtitle="Textos com lacunas" />
-        <div className="max-w-2xl mx-auto px-4 py-4">
+        <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
           <div className="space-y-3">
             {CLOZE_TEXTS.map((text) => (
               <button
@@ -202,7 +202,7 @@ export function ClozePage() {
         subtitle={submitted ? `${correctCount}/${totalCount}` : selectedText.situation}
       />
 
-      <div className="max-w-2xl mx-auto px-4 py-4">
+      <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
         <div className="card mb-6">
           {selectedText.sentences.map((sentence, si) => {
             const blanksInSentence = selectedText.blanks.filter((b) => b.sentence === si);

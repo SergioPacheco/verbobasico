@@ -22,7 +22,7 @@ export function MistakesPage() {
         subtitle={mistakes.length > 0 ? `${mistakes.length} erro${mistakes.length !== 1 ? 's' : ''}` : undefined}
       />
 
-      <div className="max-w-2xl mx-auto px-4 py-4">
+      <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
         <div className="card mb-6 animate-fade-in">
           <div className="flex items-center justify-between mb-3">
             {mistakes.length > 0 && (

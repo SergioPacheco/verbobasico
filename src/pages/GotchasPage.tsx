@@ -126,7 +126,7 @@ export function GotchasPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
         <Header title="🗣️ Quiz de Expressões" subtitle={`${quizIdx + 1}/${quizQueue.length}`} />
-        <div className="max-w-2xl mx-auto px-4 py-4">
+        <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
           <div className="h-2 bg-gray-100 rounded-full mb-6">
             <div className="h-full bg-spain-red rounded-full transition-all" style={{ width: `${(quizIdx / quizQueue.length) * 100}%` }} />
           </div>
@@ -174,7 +174,7 @@ export function GotchasPage() {
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-red-50">
       <Header title="⚠️ Pegadinhas do Espanhol" subtitle={`${totalItems} armadilhas para evitar`} />
 
-      <div className="max-w-2xl mx-auto px-4 py-4">
+      <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
         {/* Tabs */}
         <div className="grid grid-cols-4 gap-1.5 mb-6">
           {([

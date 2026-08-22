@@ -203,7 +203,7 @@ export function SpeedDrillPage() {
         subtitle={`✅ ${correct} | #${total + 1}`}
       />
 
-      <div className="max-w-2xl mx-auto px-4 py-4">
+      <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
         <div className="mb-6">
           <div className="flex items-center justify-between mb-1">
             <span className="text-xs text-gray-500">Tempo restante</span>

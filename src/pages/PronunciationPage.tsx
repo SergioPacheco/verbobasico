@@ -115,7 +115,7 @@ export function PronunciationPage() {
         subtitle={`${totalSounds} sons do espanhol`}
       />
 
-      <div className="max-w-2xl mx-auto px-4 py-4">
+      <div className="mx-auto w-full max-w-4xl px-3 py-4 sm:px-4">
         {/* Intro */}
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
           <p className="text-sm text-blue-800">
